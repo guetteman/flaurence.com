@@ -15,6 +15,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<Factory<static>> */
     use HasFactory;
+
     use Notifiable;
 
     /**
