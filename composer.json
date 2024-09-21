@@ -12,13 +12,16 @@
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.1",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^3.1",
-        "pestphp/pest-plugin-laravel": "^3.0"
+        "pestphp/pest-plugin-laravel": "^3.0",
+        "phpstan/phpstan": "^1.12"
     },
     "autoload": {
         "psr-4": {
@@ -47,7 +50,16 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
-        ]
+        ],
+        "format": [
+            "./vendor/bin/pint"
+        ],
+        "regenerate-helper-files": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -M",
+            "@php artisan ide-helper:meta"
+        ],
+        "static-analysis": "vendor/bin/phpstan analyse --memory-limit=2G"
     },
     "extra": {
         "laravel": {

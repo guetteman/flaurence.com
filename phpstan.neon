@@ -1,0 +1,14 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - ./app/
+        - ./database/
+        - ./routes/
+
+    scanFiles:
+        - ./_ide_helper_models.php
+
+    level: 8
