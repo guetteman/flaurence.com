@@ -8,28 +8,28 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Link, useForm } from '@inertiajs/react';
-import { Scissors } from 'lucide-react';
 import React, { type FormEvent } from 'react';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { data, setData, errors, post, processing } = useForm({
     email: '',
     password: '',
+    password_confirmation: '',
     remember: false,
   });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post(route('login'));
+    post(route('register'));
   }
 
   return (
     <SplitLayout>
       <div className="mx-auto w-full max-w-md space-y-8 px-4">
         <div className="text-center">
-          <h2 className="text-4xl font-bold">Login</h2>
+          <h2 className="text-3xl font-bold">Create new account</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Enter your email below to login your account
+            Enter your email below to create your account
           </p>
         </div>
         <form className="space-y-1" onSubmit={handleSubmit}>
@@ -63,6 +63,25 @@ export default function LoginPage() {
             </FormControl>
             <FormError error={errors.password} />
           </FormField>
+          <FormField>
+            <FormLabel htmlFor="password_confirmation">
+              Confirm Password
+            </FormLabel>
+            <FormControl>
+              <Input
+                id="password_confirmation"
+                name="password_confirmation"
+                type="password"
+                placeholder="Confirm your password"
+                value={data.password_confirmation}
+                onChange={(e) =>
+                  setData('password_confirmation', e.target.value)
+                }
+                required
+              />
+            </FormControl>
+            <FormError error={errors.password_confirmation} />
+          </FormField>
           <Button
             type="submit"
             disabled={processing}
@@ -72,9 +91,9 @@ export default function LoginPage() {
           </Button>
         </form>
         <div className="text-center text-sm">
-          Don't have an account?{' '}
-          <Link href={route('register')} className="font-medium underline">
-            Register here
+          Do you have an account already?{' '}
+          <Link href={route('login')} className="font-medium underline">
+            Sign In
           </Link>
         </div>
         {/*<p className="text-center text-sm text-gray-600">*/}
