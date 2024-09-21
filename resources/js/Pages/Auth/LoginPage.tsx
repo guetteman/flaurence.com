@@ -6,7 +6,6 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Link, useForm } from '@inertiajs/react';
 import { Scissors } from 'lucide-react';
 import React, { type FormEvent } from 'react';
@@ -81,6 +80,7 @@ export default function LoginPage() {
             </FormField>
             <Button
               type="submit"
+              disabled={processing}
               className="w-full bg-black text-white hover:bg-gray-800"
             >
               Sign In
@@ -88,7 +88,7 @@ export default function LoginPage() {
           </form>
           <div className="text-center text-sm">
             Don't have an account?{' '}
-            <Link href="/register" className="font-medium underline">
+            <Link href={route('register')} className="font-medium underline">
               Register here
             </Link>
           </div>
