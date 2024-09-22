@@ -69,11 +69,7 @@ export default function LoginPage() {
             </FormControl>
             <FormError error={errors.password} />
           </FormField>
-          <Button
-            type="submit"
-            disabled={processing}
-            className="w-full bg-black text-white hover:bg-gray-800"
-          >
+          <Button type="submit" disabled={processing} className="w-full">
             Sign In
           </Button>
         </motion.form>

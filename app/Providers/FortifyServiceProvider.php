@@ -50,5 +50,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return inertia('Auth/RegisterPage');
         });
+
+        Fortify::verifyEmailView(function () {
+            return inertia('Auth/VerifyEmailPage');
+        });
     }
 }

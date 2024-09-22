@@ -15,6 +15,7 @@ import type { FormEvent } from 'react';
 export default function RegisterPage() {
   const { slideUpInVariants } = useAnimationVariants();
   const { data, setData, errors, post, processing } = useForm({
+    name: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -22,6 +23,7 @@ export default function RegisterPage() {
   });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    console.log('handleSubmit');
     e.preventDefault();
     post(route('register'));
   }
@@ -40,6 +42,20 @@ export default function RegisterPage() {
           className="space-y-1"
           onSubmit={handleSubmit}
         >
+          <FormField>
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <FormControl>
+              <Input
+                id="name"
+                name="name"
+                value={data.name}
+                onChange={(e) => setData('name', e.target.value)}
+                placeholder="John Doe"
+                required
+              />
+            </FormControl>
+            <FormError error={errors.email} />
+          </FormField>
           <FormField>
             <FormLabel htmlFor="email">Email Address</FormLabel>
             <FormControl>
@@ -89,12 +105,8 @@ export default function RegisterPage() {
             </FormControl>
             <FormError error={errors.password_confirmation} />
           </FormField>
-          <Button
-            type="submit"
-            disabled={processing}
-            className="w-full bg-black text-white hover:bg-gray-800"
-          >
-            Sign In
+          <Button type="submit" disabled={processing} className="w-full">
+            Create Account
           </Button>
         </motion.form>
         <motion.div
