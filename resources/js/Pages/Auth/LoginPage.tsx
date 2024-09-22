@@ -7,11 +7,13 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import { Link, useForm } from '@inertiajs/react';
-import { Scissors } from 'lucide-react';
+import { motion } from 'framer-motion';
 import React, { type FormEvent } from 'react';
 
 export default function LoginPage() {
+  const { slideUpInVariants } = useAnimationVariants();
   const { data, setData, errors, post, processing } = useForm({
     email: '',
     password: '',
@@ -26,13 +28,17 @@ export default function LoginPage() {
   return (
     <SplitLayout>
       <div className="mx-auto w-full max-w-md space-y-8 px-4">
-        <div className="text-center">
+        <motion.div variants={slideUpInVariants} className="text-center">
           <h2 className="text-4xl font-bold">Login</h2>
           <p className="mt-2 text-sm text-gray-600">
             Enter your email below to login your account
           </p>
-        </div>
-        <form className="space-y-1" onSubmit={handleSubmit}>
+        </motion.div>
+        <motion.form
+          variants={slideUpInVariants}
+          className="space-y-1"
+          onSubmit={handleSubmit}
+        >
           <FormField>
             <FormLabel htmlFor="email">Email Address</FormLabel>
             <FormControl>
@@ -70,13 +76,16 @@ export default function LoginPage() {
           >
             Sign In
           </Button>
-        </form>
-        <div className="text-center text-sm">
+        </motion.form>
+        <motion.div
+          variants={slideUpInVariants}
+          className="text-center text-sm"
+        >
           Don't have an account?{' '}
           <Link href={route('register')} className="font-medium underline">
             Register here
           </Link>
-        </div>
+        </motion.div>
         {/*<p className="text-center text-sm text-gray-600">*/}
         {/*  By clicking continue, you agree to our{' '}*/}
         {/*  <Link href="#" className="underline">*/}

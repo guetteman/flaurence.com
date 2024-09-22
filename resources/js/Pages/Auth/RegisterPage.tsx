@@ -7,10 +7,13 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import { Link, useForm } from '@inertiajs/react';
-import React, { type FormEvent } from 'react';
+import { motion } from 'framer-motion';
+import type { FormEvent } from 'react';
 
 export default function RegisterPage() {
+  const { slideUpInVariants } = useAnimationVariants();
   const { data, setData, errors, post, processing } = useForm({
     email: '',
     password: '',
@@ -26,13 +29,17 @@ export default function RegisterPage() {
   return (
     <SplitLayout>
       <div className="mx-auto w-full max-w-md space-y-8 px-4">
-        <div className="text-center">
+        <motion.div variants={slideUpInVariants} className="text-center">
           <h2 className="text-3xl font-bold">Create new account</h2>
           <p className="mt-2 text-sm text-gray-600">
             Enter your email below to create your account
           </p>
-        </div>
-        <form className="space-y-1" onSubmit={handleSubmit}>
+        </motion.div>
+        <motion.form
+          variants={slideUpInVariants}
+          className="space-y-1"
+          onSubmit={handleSubmit}
+        >
           <FormField>
             <FormLabel htmlFor="email">Email Address</FormLabel>
             <FormControl>
@@ -89,13 +96,16 @@ export default function RegisterPage() {
           >
             Sign In
           </Button>
-        </form>
-        <div className="text-center text-sm">
+        </motion.form>
+        <motion.div
+          variants={slideUpInVariants}
+          className="text-center text-sm"
+        >
           Do you have an account already?{' '}
           <Link href={route('login')} className="font-medium underline">
             Sign In
           </Link>
-        </div>
+        </motion.div>
         {/*<p className="text-center text-sm text-gray-600">*/}
         {/*  By clicking continue, you agree to our{' '}*/}
         {/*  <Link href="#" className="underline">*/}
