@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {PageLayout} from '@/components/ui/layout/page-layout';
+import { PageLayout } from '@/components/ui/layout/page-layout';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import { Link, useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
@@ -24,7 +24,6 @@ export default function RegisterPage() {
   });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    console.log('handleSubmit');
     e.preventDefault();
     post(route('register'));
   }
