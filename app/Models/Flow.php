@@ -16,6 +16,7 @@ class Flow extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'enabled' => 'boolean',
         'input_schema' => AsArrayObject::class,
         'output_type' => FlowOutputTypeEnum::class,
     ];
