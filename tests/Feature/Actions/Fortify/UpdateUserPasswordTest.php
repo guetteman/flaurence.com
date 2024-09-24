@@ -1,6 +1,5 @@
 <?php
 
-use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;

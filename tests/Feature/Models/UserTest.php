@@ -23,6 +23,6 @@ describe('User Model', function () {
 
         config(['admin.email' => $user->email]);
 
-        $this->assertTrue($user->canAccessPanel(new Panel()));
+        $this->assertTrue($user->canAccessPanel(new Panel));
     });
 });
