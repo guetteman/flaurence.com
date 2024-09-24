@@ -1,5 +1,8 @@
 <?php
 
-arch()->preset()->laravel();
+use App\Providers\Filament\AdminPanelProvider;
+
+arch()->preset()->laravel()
+    ->ignoring(AdminPanelProvider::class);
 
 arch()->preset()->security();
