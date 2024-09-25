@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('short_description');
             $table->text('description');
+            $table->string('version')->default('1.0.0');
             $table->boolean('enabled')->default(false);
             $table->json('input_schema');
             $table->string('output_type');

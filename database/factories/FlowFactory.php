@@ -20,10 +20,11 @@ class FlowFactory extends Factory
     {
         return [
             'external_id' => $this->faker->uuid,
-            'enabled' => true,
             'name' => $this->faker->sentence,
             'short_description' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
+            'version' => '1.0.0',
+            'enabled' => true,
             'input_schema' => [],
             'output_type' => FlowOutputTypeEnum::Markdown,
         ];
