@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flows', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('external_id');
             $table->string('name');
-            $table->string('short_description');
-            $table->text('description');
+            $table->json('input');
+            $table->json('output');
             $table->boolean('enabled')->default(false);
-            $table->json('input_schema');
-            $table->string('output_type');
+            $table->string('cron_expression')->nullable();
+            $table->string('timezone')->nullable();
+
+            $table->foreignId('flow_id')->constrained()->noActionOnDelete();
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flows');
+        Schema::dropIfExists('projects');
     }
 };

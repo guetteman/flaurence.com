@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\FlowOutputTypeEnum;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Flow extends Model
+class Project extends Model
 {
     /** @use HasFactory<Factory<static>> */
     use HasFactory;
 
     use SoftDeletes;
 
-    protected $guarded = [];
-
     protected $casts = [
         'enabled' => 'boolean',
-        'input_schema' => AsArrayObject::class,
-        'output_type' => FlowOutputTypeEnum::class,
+        'input' => AsArrayObject::class,
+        'output' => AsArrayObject::class,
     ];
 }

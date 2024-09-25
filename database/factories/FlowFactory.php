@@ -20,6 +20,7 @@ class FlowFactory extends Factory
     {
         return [
             'external_id' => $this->faker->uuid,
+            'enabled' => true,
             'name' => $this->faker->sentence,
             'short_description' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
