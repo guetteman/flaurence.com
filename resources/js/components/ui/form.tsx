@@ -1,5 +1,5 @@
 import { Label } from '@/components/ui/label';
-import React, { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 function FormField({ children }: { children: ReactNode }) {
   return <div className="space-y-1">{children}</div>;

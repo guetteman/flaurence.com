@@ -5,7 +5,7 @@
         "dev": "vite",
         "build": "vite build",
         "format": "prettier --write resources/js/**/*.{ts,tsx}",
-        "lint": "biome lint ./resources/js --fix"
+        "lint": "biome lint ./resources/js --write"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.9.2",

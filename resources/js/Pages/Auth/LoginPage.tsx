@@ -11,7 +11,7 @@ import { PageLayout } from '@/components/ui/layout/page-layout';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import { Link, useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import React, { type FormEvent } from 'react';
+import type { FormEvent } from 'react';
 
 export default function LoginPage() {
   const { slideUpInVariants } = useAnimationVariants();
