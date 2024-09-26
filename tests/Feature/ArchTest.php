@@ -11,3 +11,8 @@ arch()->preset()->security();
 arch()
     ->expect('App\Models')
     ->toUseTrait(SoftDeletes::class);
+
+arch()
+    ->expect('App\Actions')
+    ->toHaveMethod('execute')
+    ->ignoring('App\Actions\Fortify');

@@ -25,4 +25,10 @@ describe('User Model', function () {
 
         $this->assertTrue($user->canAccessPanel(new Panel));
     });
+
+    it('has many projects', function () {
+        $user = User::factory()->hasProjects(3)->create();
+
+        $this->assertCount(3, $user->projects);
+    });
 });

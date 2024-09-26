@@ -18,6 +18,5 @@ class Project extends Model
     protected $casts = [
         'enabled' => 'boolean',
         'input' => AsArrayObject::class,
-        'output' => AsArrayObject::class,
     ];
 }
