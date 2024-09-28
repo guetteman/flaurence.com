@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Resources\FlowResource;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 
@@ -21,7 +22,7 @@ describe('ProjectResource', function () {
             'timezone' => $project->timezone,
             'user_id' => $project->user_id,
             'flow_id' => $project->flow_id,
-            'flow' => new ProjectResource($project->flow),
+            'flow' => new FlowResource($project->flow),
         ]);
     });
 });

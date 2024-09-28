@@ -36,17 +36,24 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
           {projects.data.length ? (
             <div className="grid grid-cols-1 md:grid-cols-3">
               {projects.data.map((project) => (
-                <Card key={project.id}>
-                  <CardHeader>
-                    <CardTitle>{project.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm font-bold uppercase text-gray-500">
-                      Flow
-                    </div>
-                    <p className="text-sm text-gray-500">{project.flow.name}</p>
-                  </CardContent>
-                </Card>
+                <Link
+                  key={project.id}
+                  href={route('projects.show', project.id)}
+                >
+                  <Card className="hover:bg-gray-50">
+                    <CardHeader>
+                      <CardTitle>{project.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-sm font-bold uppercase text-gray-500">
+                        Flow
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        {project.flow.name}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           ) : (

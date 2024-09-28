@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Resources\FlowResource;
+use App\Http\Resources\ProjectResource;
 use App\Models\Flow;
+use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -34,5 +36,12 @@ class ProjectController extends Controller
         ]);
 
         return redirect()->route('dashboard');
+    }
+
+    public function show(Project $project): Response|ResponseFactory
+    {
+        return inertia('Projects/ShowPage', [
+            'project' => new ProjectResource($project->load('flow')),
+        ]);
     }
 }

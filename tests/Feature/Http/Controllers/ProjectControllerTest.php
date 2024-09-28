@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProjectController;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Flow;
+use App\Models\Project;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
@@ -131,5 +132,46 @@ describe('ProjectController store', function () {
                 'input' => 'not-an-array',
             ])
             ->assertSessionHasErrors('input');
+    });
+});
+
+describe('ProjectController show', function () {
+    it('should show a project', function () {
+        $project = Project::factory()
+            ->create()
+            ->load('flow');
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('projects.show', $project))
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
+                    ->component('Projects/ShowPage')
+                    ->has('project.data', fn (AssertableInertia $page) => $page
+                        ->where('id', $project->id)
+                        ->where('name', $project->name)
+                        ->where('input', $project->input)
+                        ->where('cron_expression', $project->cron_expression)
+                        ->where('timezone', $project->timezone)
+                        ->where('user_id', $project->user_id)
+                        ->where('flow_id', $project->flow_id)
+                        ->has('flow', fn (AssertableInertia $page) => $page
+                            ->where('id', $project->flow->id)
+                            ->where('name', $project->flow->name)
+                            ->where('short_description', $project->flow->short_description)
+                            ->where('description', $project->flow->description)
+                            ->where('version', $project->flow->version)
+                            ->where('input_schema', $project->flow->input_schema)
+                        )
+                    )
+            );
+    });
+
+    it('redirects to login if user is not authenticated', function () {
+        $project = Project::factory()->create();
+
+        $response = $this->get(route('projects.show', $project));
+
+        $response->assertRedirect(route('login'));
     });
 });
