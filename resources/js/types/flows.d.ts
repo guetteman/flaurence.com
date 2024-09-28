@@ -1,10 +1,14 @@
-export type Flow = {
+export type FlowResourceCollection = {
+  data: FlowResourceData[];
+};
+
+export type FlowResourceData = {
   id: number;
   name: string;
   short_description: string;
   description: string;
+  version: string;
   input_schema: InputSchema[];
-  timezone?: string;
 };
 
 type InputSchema = {

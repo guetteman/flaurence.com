@@ -29,4 +29,18 @@ class FlowFactory extends Factory
             'output_type' => FlowOutputTypeEnum::Markdown,
         ];
     }
+
+    public function enabled(): FlowFactory
+    {
+        return $this->state([
+            'enabled' => true,
+        ]);
+    }
+
+    public function disabled(): FlowFactory
+    {
+        return $this->state([
+            'enabled' => false,
+        ]);
+    }
 }

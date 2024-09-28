@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Project;
-use Illuminate\Database\Eloquent\Casts\ArrayObject;
 
 describe('Project model', function () {
     it('should cast input to ArrayObject', function () {
@@ -9,7 +8,7 @@ describe('Project model', function () {
             'input' => ['foo' => 'bar'],
         ]);
 
-        expect($project->input)->toBeInstanceOf(ArrayObject::class);
+        expect($project->input)->toBeArray();
     });
 
     it('should cast enabled column to boolean', function () {

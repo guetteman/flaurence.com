@@ -48,7 +48,7 @@ class FlowResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->readOnly()
-                                    ->default(fn() => Str::uuid()->toString()),
+                                    ->default(fn () => Str::uuid()->toString()),
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
@@ -66,7 +66,7 @@ class FlowResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->readOnly()
-                                    ->default(fn() => Str::uuid()->toString()),
+                                    ->default(fn () => Str::uuid()->toString()),
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),

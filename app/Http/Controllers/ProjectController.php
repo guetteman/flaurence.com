@@ -2,40 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Resources\FlowResource;
 use App\Models\Flow;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
+use Inertia\ResponseFactory;
 
 class ProjectController extends Controller
 {
-    public function create(): Response
+    public function create(): Response|ResponseFactory
     {
         $flows = Flow::query()
             ->where('enabled', true)
             ->get();
 
         return inertia('Projects/CreatePage', [
-            'flows' => $flows,
+            'flows' => FlowResource::collection($flows),
         ]);
     }
 
-    public function store(): RedirectResponse
+    public function store(StoreProjectRequest $request): RedirectResponse
     {
-        request()->validate([
-            'name' => ['required', 'string'],
-            'flow_id' => ['required', 'exists:flows,id'],
-            'input' => ['array'],
-        ]);
+        $flow = Flow::query()->findOrFail($request->integer('flow_id'));
 
-        $flow = Flow::query()->findOrFail(request('flow_id'));
-
-        $project = $flow->projects()->create([
+        $flow->projects()->create([
             'user_id' => auth()->id(),
-            'name' => request('name'),
-            'input' => request('input'),
+            'name' => $request->string('name'),
+            'input' => $request->input('input'),
             'enabled' => true,
         ]);
 
-        return redirect()->route('dashboard', $project);
+        return redirect()->route('dashboard');
     }
 }

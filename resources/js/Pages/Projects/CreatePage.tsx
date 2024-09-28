@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
-import type { Flow } from '@/types/flows';
+import type { FlowResourceCollection, FlowResourceData } from '@/types/flows';
 import { useForm, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { type FormEvent, useState } from 'react';
@@ -32,8 +32,10 @@ interface FormDataType {
 
 export default function CreatePage() {
   const { slideUpInVariants, slideDownInVariants } = useAnimationVariants();
-  const [selectedFlow, setSelectedFlow] = useState<Flow | undefined>();
-  const { flows } = usePage<{ flows: Flow[] }>().props;
+  const [selectedFlow, setSelectedFlow] = useState<
+    FlowResourceData | undefined
+  >();
+  const { flows } = usePage<{ flows: FlowResourceCollection }>().props;
 
   const { data, setData, errors, post, processing } = useForm<FormDataType>({
     name: '',
@@ -72,7 +74,9 @@ export default function CreatePage() {
                 onValueChange={(value) => {
                   setData('flow_id', value);
                   setSelectedFlow(
-                    flows.find((flow) => flow.id === Number.parseInt(value)),
+                    flows.data.find(
+                      (flow) => flow.id === Number.parseInt(value),
+                    ),
                   );
                 }}
               >
@@ -81,7 +85,7 @@ export default function CreatePage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {flows.map((flow) => (
+                    {flows.data.map((flow) => (
                       <SelectItem key={flow.id} value={flow.id.toString()}>
                         <div className="text-bold">{flow.name}</div>
                         <p className="text-xs text-muted-foreground">
