@@ -28,4 +28,10 @@ describe('Flow model', function () {
 
         expect($flow->enabled)->toBeTrue();
     });
+
+    it('should have projects relationship', function () {
+        $flow = Flow::factory()->hasProjects(1)->create();
+
+        expect($flow->projects)->toHaveCount(1);
+    });
 });

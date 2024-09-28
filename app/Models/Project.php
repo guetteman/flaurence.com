@@ -15,6 +15,8 @@ class Project extends Model
 
     use SoftDeletes;
 
+    protected $guarded = [];
+
     protected $casts = [
         'enabled' => 'boolean',
         'input' => AsArrayObject::class,

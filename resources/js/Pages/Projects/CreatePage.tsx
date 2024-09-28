@@ -26,7 +26,6 @@ import { type FormEvent, useState } from 'react';
 
 interface FormDataType {
   name: string;
-  description: string;
   flow_id: string;
   input: Record<string, unknown>;
 }
@@ -38,15 +37,13 @@ export default function CreatePage() {
 
   const { data, setData, errors, post, processing } = useForm<FormDataType>({
     name: '',
-    description: '',
     flow_id: '',
     input: {},
   });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    console.log(data.input);
     e.preventDefault();
-    post(route('login'));
+    post(route('projects.store'));
   }
 
   return (
@@ -96,7 +93,7 @@ export default function CreatePage() {
                 </SelectContent>
               </Select>
             </FormControl>
-            <FormError error={errors.name} />
+            <FormError error={errors.flow_id} />
           </FormField>
 
           <FormField>
@@ -112,21 +109,6 @@ export default function CreatePage() {
               />
             </FormControl>
             <FormError error={errors.name} />
-          </FormField>
-
-          <FormField>
-            <FormLabel htmlFor="name">Description</FormLabel>
-            <FormControl>
-              <Textarea
-                id="description"
-                name="description"
-                value={data.description}
-                onChange={(e) => setData('description', e.target.value)}
-                placeholder="Goal of your project"
-                required
-              />
-            </FormControl>
-            <FormError error={errors.description} />
           </FormField>
 
           <AnimatePresence>

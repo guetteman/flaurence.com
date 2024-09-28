@@ -23,19 +23,19 @@ class ProjectController extends Controller
     {
         request()->validate([
             'name' => ['required', 'string'],
-            'short_description' => ['required', 'string'],
-            'description' => ['required', 'string'],
             'flow_id' => ['required', 'exists:flows,id'],
+            'input' => ['array'],
         ]);
 
         $flow = Flow::query()->findOrFail(request('flow_id'));
 
         $project = $flow->projects()->create([
+            'user_id' => auth()->id(),
             'name' => request('name'),
-            'short_description' => request('short_description'),
-            'description' => request('description'),
+            'input' => request('input'),
+            'enabled' => true,
         ]);
 
-        return redirect()->route('projects.show', $project);
+        return redirect()->route('dashboard', $project);
     }
 }
