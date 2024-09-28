@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class FlowResource extends Resource
 {
@@ -43,9 +44,11 @@ class FlowResource extends Resource
                         Forms\Components\Builder\Block::make(FlowInputSchemaTypeEnum::TextInput->value)
                             ->label(FlowInputSchemaTypeEnum::TextInput->getLabel())
                             ->schema([
-                                Forms\Components\TextInput::make('key')
+                                Forms\Components\TextInput::make('id')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->readOnly()
+                                    ->default(fn() => Str::uuid()->toString()),
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
@@ -56,20 +59,21 @@ class FlowResource extends Resource
                                     ->options(TextInputTypeEnum::class),
                             ]),
 
-                        Forms\Components\Builder\Block::make(FlowInputSchemaTypeEnum::TextInputRepeater->value)
-                            ->label(FlowInputSchemaTypeEnum::TextInputRepeater->getLabel())
+                        Forms\Components\Builder\Block::make(FlowInputSchemaTypeEnum::ArrayInput->value)
+                            ->label(FlowInputSchemaTypeEnum::ArrayInput->getLabel())
                             ->schema([
-                                Forms\Components\TextInput::make('key')
+                                Forms\Components\TextInput::make('id')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->readOnly()
+                                    ->default(fn() => Str::uuid()->toString()),
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
                                     ->required(),
-                                Forms\Components\Select::make('type')
-                                    ->required()
-                                    ->options(TextInputTypeEnum::class),
+                                Forms\Components\Textarea::make('placeholder')
+                                    ->required(),
                             ]),
                     ]),
                 Forms\Components\Select::make('output_type')

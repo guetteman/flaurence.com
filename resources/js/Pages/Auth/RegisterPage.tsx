@@ -55,7 +55,7 @@ export default function RegisterPage() {
                   required
                 />
               </FormControl>
-              <FormError error={errors.email} />
+              <FormError error={errors.name} />
             </FormField>
             <FormField>
               <FormLabel htmlFor="email">Email Address</FormLabel>

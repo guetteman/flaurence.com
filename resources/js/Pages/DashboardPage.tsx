@@ -6,6 +6,7 @@ import { AnimatedContainer } from '@/components/ui/layout/animated-container';
 import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { ProjectResourceCollection } from '@/types/projects';
+import {Link} from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface DashboardPageProps {
@@ -22,10 +23,12 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
           variants={slideUpInVariants}
           className="flex items-center justify-end"
         >
-          <Button>
-            <PlusSignIcon className="mr-2 size-4" />
-            New Project
-          </Button>
+          <Link href={route('projects.create')}>
+            <Button>
+              <PlusSignIcon className="mr-2 size-4" />
+              New Project
+            </Button>
+          </Link>
         </motion.div>
         <Separator className="mt-8" />
         <div>

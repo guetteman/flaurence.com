@@ -6,14 +6,16 @@ use Filament\Support\Contracts\HasLabel;
 
 enum TextInputTypeEnum: string implements HasLabel
 {
-    case String = 'string';
+    case Text = 'text';
     case Number = 'number';
+    case Email = 'email';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::String => 'String',
+            self::Text => 'Text',
             self::Number => 'Number',
+            self::Email => 'email',
         };
     }
 }

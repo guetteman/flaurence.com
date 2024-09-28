@@ -2,6 +2,7 @@ import { FolderAddIcon } from '@/components/icons/folder-add-icon';
 import { PlusSignIcon } from '@/components/icons/plus-sign-icon';
 import { Button } from '@/components/ui/button';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
+import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 export function EmptyProjects() {
@@ -17,10 +18,12 @@ export function EmptyProjects() {
         Get started by creating a new project.
       </p>
       <motion.div variants={slideUpInVariants} className="mt-6">
-        <Button>
-          <PlusSignIcon aria-hidden="true" className="mr-2 size-4" />
-          New Project
-        </Button>
+        <Link href={route('projects.create')}>
+          <Button>
+            <PlusSignIcon className="mr-2 size-4" />
+            New Project
+          </Button>
+        </Link>
       </motion.div>
     </motion.div>
   );
