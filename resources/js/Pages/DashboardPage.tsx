@@ -2,11 +2,12 @@ import { Navbar } from '@/components/app/navbar';
 import { EmptyProjects } from '@/components/app/pages/dashboard/empty-projects';
 import { PlusSignIcon } from '@/components/icons/plus-sign-icon';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnimatedContainer } from '@/components/ui/layout/animated-container';
 import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { ProjectResourceCollection } from '@/types/projects';
-import {Link} from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface DashboardPageProps {
@@ -31,8 +32,26 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
           </Link>
         </motion.div>
         <Separator className="mt-8" />
-        <div>
-          {projects.data.length ? <div>Projects</div> : <EmptyProjects />}
+        <div className="mt-10">
+          {projects.data.length ? (
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              {projects.data.map((project) => (
+                <Card key={project.id}>
+                  <CardHeader>
+                    <CardTitle>{project.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-sm font-bold uppercase text-gray-500">
+                      Flow
+                    </div>
+                    <p className="text-sm text-gray-500">{project.flow.name}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <EmptyProjects />
+          )}
         </div>
       </div>
     </AnimatedContainer>

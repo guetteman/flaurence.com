@@ -26,6 +26,7 @@ class ProjectResource extends JsonResource
             'timezone' => $this->timezone,
             'user_id' => $this->user_id,
             'flow_id' => $this->flow_id,
+            'flow' => FlowResource::make($this->whenLoaded('flow')),
         ];
     }
 }

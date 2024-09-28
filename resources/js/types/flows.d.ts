@@ -2,6 +2,10 @@ export type FlowResourceCollection = {
   data: FlowResourceData[];
 };
 
+export type FlowResource = {
+  data: FlowResourceData;
+};
+
 export type FlowResourceData = {
   id: number;
   name: string;

@@ -13,6 +13,9 @@ class GetUserProjects
      */
     public function execute(User $user): Collection
     {
-        return $user->projects;
+        return $user
+            ->projects()
+            ->with('flow')
+            ->get();
     }
 }
