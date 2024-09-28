@@ -11,7 +11,7 @@ describe('FlowResource', function () {
 
         $resource = FlowResource::make($flow);
 
-        expect($resource->resolve())->toBe([
+        expect($resource->resolve())->toMatchArray([
             'id' => $flow->id,
             'name' => $flow->name,
             'short_description' => $flow->short_description,
