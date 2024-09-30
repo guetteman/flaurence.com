@@ -2,7 +2,4 @@
 
 namespace App\Domain\LaraGraph;
 
-abstract class State
-{
-
-}
+abstract class State {}

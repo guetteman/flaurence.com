@@ -9,16 +9,24 @@ use InvalidArgumentException;
 
 class StateGraph
 {
+    public static string $START = 'START';
+
+    public static string $END = 'START';
+
     /**
      * @var array<string, Node>
      */
     private array $nodes = [];
+
     /**
      * @var array<string, string[]>
      */
     private array $edges = [];
+
     private string $entryPoint = 'START';
+
     private string $endPoint = 'END';
+
     /**
      * @var class-string
      */
@@ -32,9 +40,8 @@ class StateGraph
     /**
      * Add a new node to the graph
      *
-     * @param string $name The name of the node
-     * @param Node $node The class to be executed when this node is reached
-     * @return self
+     * @param  string  $name  The name of the node
+     * @param  Node  $node  The class to be executed when this node is reached
      */
     public function addNode(string $name, Node $node): self
     {
@@ -43,69 +50,70 @@ class StateGraph
         }
 
         $this->nodes[$name] = $node;
+
         return $this;
     }
 
     /**
      * Add an edge between two nodes
      *
-     * @param string $from The name of the source node
-     * @param string $to The name of the destination node
-     * @return self
+     * @param  string  $from  The name of the source node
+     * @param  string  $to  The name of the destination node
      */
     public function addEdge(string $from, string $to): self
     {
-        if (!isset($this->nodes[$from])) {
+        if (! isset($this->nodes[$from])) {
             throw new InvalidArgumentException("Node with name $from does not exist in the graph");
         }
 
-        if (!isset($this->nodes[$to])) {
+        if (! isset($this->nodes[$to])) {
             throw new InvalidArgumentException("Node with name $to does not exist in the graph");
         }
 
-        if (!isset($this->edges[$from])) {
+        if (! isset($this->edges[$from])) {
             $this->edges[$from] = [];
         }
 
         $this->edges[$from][] = $to;
+
         return $this;
     }
 
     /**
      * Set the entry point of the graph
      *
-     * @param string $nodeName The name of the node to set as entry point
-     * @return self
+     * @param  string  $nodeName  The name of the node to set as entry point
      */
     public function setEntryPoint(string $nodeName): self
     {
-        if (!isset($this->nodes[$nodeName])) {
+        if (! isset($this->nodes[$nodeName])) {
             throw new InvalidArgumentException("Node with name $nodeName does not exist in the graph");
         }
 
         $this->entryPoint = $nodeName;
+
         return $this;
     }
 
     /**
      * Set the end point of the graph
      *
-     * @param string $nodeName The name of the node to set as end point
-     * @return self
+     * @param  string  $nodeName  The name of the node to set as end point
      */
     public function setEndPoint(string $nodeName): self
     {
-        if (!isset($this->nodes[$nodeName])) {
+        if (! isset($this->nodes[$nodeName])) {
             throw new InvalidArgumentException("Node with name $nodeName does not exist in the graph");
         }
 
         $this->endPoint = $nodeName;
+
         return $this;
     }
 
     public function compile(?Checkpointer $checkpointer = null): object
     {
-        $checkpointer = $checkpointer ?? new NullCheckpointer();
+        $checkpointer = $checkpointer ?? new NullCheckpointer;
 
         $this->validateGraph();
 
@@ -115,6 +123,7 @@ class StateGraph
             $nodeFunctions[$nodeName] = function ($state) use ($nodeName, $node, $checkpointer) {
                 $result = $node->execute($state);
                 $checkpointer->save($nodeName, $state);
+
                 return $result;
             };
         }
@@ -123,11 +132,16 @@ class StateGraph
         $transitions = $this->createTransitions();
 
         // Create the final runnable
-        return new class($nodeFunctions, $transitions, $this->entryPoint, $this->endPoint, $this->stateClass) {
+        return new class($nodeFunctions, $transitions, $this->entryPoint, $this->endPoint, $this->stateClass)
+        {
             private $nodeFunctions;
+
             private $transitions;
+
             private $entryPoint;
+
             private $endPoint;
+
             private $stateClass;
 
             public function __construct($nodeFunctions, $transitions, $entryPoint, $endPoint, $stateClass)
@@ -169,14 +183,14 @@ class StateGraph
         $this->dfs($this->entryPoint, $visited);
 
         foreach ($this->nodes as $nodeName => $node) {
-            if (!isset($visited[$nodeName])) {
+            if (! isset($visited[$nodeName])) {
                 throw new NodeIsNotReachable("Node '$nodeName' is not reachable from the entry point.");
             }
         }
 
         // Check if end point is reachable
-        if (!isset($visited[$this->endPoint])) {
-            throw new NodeIsNotReachable("End point is not reachable from the entry point.");
+        if (! isset($visited[$this->endPoint])) {
+            throw new NodeIsNotReachable('End point is not reachable from the entry point.');
         }
     }
 
@@ -185,7 +199,7 @@ class StateGraph
         $visited[$node] = true;
         if (isset($this->edges[$node])) {
             foreach ($this->edges[$node] as $nextNode) {
-                if (!isset($visited[$nextNode])) {
+                if (! isset($visited[$nextNode])) {
                     $this->dfs($nextNode, $visited);
                 }
             }
@@ -206,6 +220,7 @@ class StateGraph
                 };
             }
         }
+
         return $transitions;
     }
 }
