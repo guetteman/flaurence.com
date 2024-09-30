@@ -2,7 +2,14 @@
 
 namespace App\Domain\LaraGraph;
 
+/**
+ * @template T extends State
+ */
 abstract class Node
 {
-    abstract public function execute(State $state): State;
+    /**
+     * @param T $state
+     * @return T
+     */
+    abstract public function execute($state);
 }
