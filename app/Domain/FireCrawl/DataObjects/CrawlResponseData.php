@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl\DataObjects;
+namespace App\Domain\FireCrawl\DataObjects;
 
 use Spatie\LaravelData\Data;
 

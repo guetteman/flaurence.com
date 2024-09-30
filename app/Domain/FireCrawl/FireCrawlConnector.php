@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl;
+namespace App\Domain\FireCrawl;
 
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;

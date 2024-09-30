@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl\Requests;
+namespace App\Domain\FireCrawl\Requests;
 
-use App\Domain\Tools\FireCrawl\DataObjects\ExtractResponseData;
+use App\Domain\FireCrawl\DataObjects\ExtractResponseData;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

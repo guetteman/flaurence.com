@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl\Requests;
+namespace App\Domain\FireCrawl\Requests;
 
-use App\Domain\Tools\FireCrawl\DataObjects\CancelCrawlResponseData;
+use App\Domain\FireCrawl\DataObjects\CancelCrawlResponseData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;

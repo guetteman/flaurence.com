@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl\DataObjects;
+namespace App\Domain\FireCrawl\DataObjects;
 
-use App\Domain\Tools\FireCrawl\CrawlStatusEnum;
+use App\Domain\FireCrawl\CrawlStatusEnum;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 

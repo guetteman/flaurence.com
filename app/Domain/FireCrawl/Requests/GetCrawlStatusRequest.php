@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Tools\FireCrawl\Requests;
+namespace App\Domain\FireCrawl\Requests;
 
-use App\Domain\Tools\FireCrawl\DataObjects\GetCrawlStatusResponseData;
+use App\Domain\FireCrawl\DataObjects\GetCrawlStatusResponseData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
