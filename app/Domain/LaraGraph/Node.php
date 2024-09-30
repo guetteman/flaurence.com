@@ -4,5 +4,5 @@ namespace App\Domain\LaraGraph;
 
 abstract class Node
 {
-    abstract public function execute(): void;
+    abstract public function execute(State $state): State;
 }
