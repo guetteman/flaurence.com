@@ -3,6 +3,7 @@
 namespace App\Domain\Graphs\Newsletter;
 
 use App\Domain\Graphs\Newsletter\Nodes\Crawler;
+use App\Domain\Graphs\Newsletter\Nodes\Summarizer;
 use App\Domain\LaraGraph\StateGraph;
 
 class NewsletterGraph
@@ -11,6 +12,8 @@ class NewsletterGraph
     {
         $graph = new StateGraph(NewsletterState::class);
 
-        $graph->addNode('Crawl Urls', new Crawler());
+        $graph
+            ->addNode('Crawl Urls', new Crawler)
+            ->addNode('Summarize Pages', new Summarizer);
     }
 }

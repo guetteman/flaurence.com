@@ -15,6 +15,7 @@ class Crawler extends Node
     public function execute($state): NewsletterState
     {
         $state->crawledPages = $this->loadUrls($state);
+
         return $state;
     }
 
@@ -27,6 +28,7 @@ class Crawler extends Node
             $document = $this->loadUrl($url);
             $allDocuments = array_merge($allDocuments, $document);
         }
+
         return $allDocuments;
     }
 

@@ -11,6 +11,7 @@
         "laravel/fortify": "^1.24",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "openai-php/laravel": "^0.10.1",
         "saloonphp/laravel-plugin": "^3.0",
         "saloonphp/saloon": "^3.0",
         "spatie/laravel-data": "^4.9",

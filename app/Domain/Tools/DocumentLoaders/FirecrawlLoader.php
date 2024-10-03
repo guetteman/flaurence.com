@@ -31,6 +31,7 @@ class FirecrawlLoader extends DocumentLoader
 
         /** @var CrawlResponseData $crawlJob */
         $crawlJob = $this->firecrawl->send($crawlRequest)->dto();
+
         return $this->getCrawlResults($crawlJob->id);
     }
 
@@ -42,6 +43,7 @@ class FirecrawlLoader extends DocumentLoader
 
         if ($crawlStatus->status === CrawlStatusEnum::Scraping) {
             sleep(3);
+
             return $this->getCrawlResults($crawlJobId, $results);
         }
 

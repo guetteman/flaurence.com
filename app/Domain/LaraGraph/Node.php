@@ -8,7 +8,7 @@ namespace App\Domain\LaraGraph;
 abstract class Node
 {
     /**
-     * @param T $state
+     * @param  T  $state
      * @return T
      */
     abstract public function execute($state);

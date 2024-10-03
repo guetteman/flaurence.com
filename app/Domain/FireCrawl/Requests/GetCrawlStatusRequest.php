@@ -17,7 +17,7 @@ class GetCrawlStatusRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/crawls/' . $this->id;
+        return '/crawls/'.$this->id;
     }
 
     public function createDtoFromResponse(Response $response): GetCrawlStatusResponseData
