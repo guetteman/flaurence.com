@@ -9,9 +9,8 @@ use InvalidArgumentException;
 
 class StateGraph
 {
-    public static string $START = 'START';
-
-    public static string $END = 'START';
+    const START = 'START';
+    const END = 'END';
 
     /**
      * @var array<string, Node>

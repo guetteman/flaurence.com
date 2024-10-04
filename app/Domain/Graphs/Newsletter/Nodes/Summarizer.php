@@ -30,7 +30,7 @@ class Summarizer extends Node
         return $summaries;
     }
 
-    protected function summarizePage(string $topic, array $pageData): string
+    protected function summarizePage(string $topic, array $pageData): array
     {
         $llm = new OpenAILLM;
 
@@ -53,10 +53,15 @@ class Summarizer extends Node
             Message::make('user', "{$prompt}"),
         ]);
 
-        return $llm->generate($promptTemplate->formatPrompt([
+        $response = $llm->generate($promptTemplate->formatPrompt([
             'topic' => $topic,
             'url' => $pageData['url'],
             'content' => $pageData['content'],
         ]));
+
+        return [
+            'url' => $pageData['url'],
+            'content' => $response,
+        ];
     }
 }
