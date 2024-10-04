@@ -17,6 +17,7 @@ class Writer extends Node
     public function execute($state): State
     {
         $state->output = $this->writeNewsletter($state);
+
         return $state;
     }
 

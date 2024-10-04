@@ -10,6 +10,7 @@ use InvalidArgumentException;
 class StateGraph
 {
     const START = 'START';
+
     const END = 'END';
 
     /**
