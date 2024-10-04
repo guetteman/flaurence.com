@@ -4,7 +4,7 @@ namespace App\Domain\LaraGraph;
 
 use App\Domain\LaraGraph\Checkpointers\Checkpointer;
 use App\Domain\LaraGraph\Checkpointers\NullCheckpointer;
-use App\Domain\LaraGraph\Exceptions\NodeIsNotReachable;
+use App\Domain\LaraGraph\Exceptions\NodeIsNotReachableException;
 use InvalidArgumentException;
 
 class StateGraph
@@ -174,7 +174,7 @@ class StateGraph
     }
 
     /**
-     * @throws NodeIsNotReachable
+     * @throws NodeIsNotReachableException
      */
     private function validateGraph(): void
     {
@@ -184,13 +184,13 @@ class StateGraph
 
         foreach ($this->nodes as $nodeName => $node) {
             if (! isset($visited[$nodeName])) {
-                throw new NodeIsNotReachable("Node '$nodeName' is not reachable from the entry point.");
+                throw new NodeIsNotReachableException("Node '$nodeName' is not reachable from the entry point.");
             }
         }
 
         // Check if end point is reachable
         if (! isset($visited[$this->endPoint])) {
-            throw new NodeIsNotReachable('End point is not reachable from the entry point.');
+            throw new NodeIsNotReachableException('End point is not reachable from the entry point.');
         }
     }
 

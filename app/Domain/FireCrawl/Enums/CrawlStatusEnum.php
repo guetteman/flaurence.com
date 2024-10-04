@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\FireCrawl;
+namespace App\Domain\FireCrawl\Enums;
 
 enum CrawlStatusEnum: string
 {

@@ -2,9 +2,9 @@
 
 namespace App\Domain\Tools\DocumentLoaders;
 
-use App\Domain\FireCrawl\CrawlStatusEnum;
 use App\Domain\FireCrawl\DataObjects\CrawlResponseData;
 use App\Domain\FireCrawl\DataObjects\GetCrawlStatusResponseData;
+use App\Domain\FireCrawl\Enums\CrawlStatusEnum;
 use App\Domain\FireCrawl\FireCrawlConnector;
 use App\Domain\FireCrawl\Requests\CrawlRequest;
 use App\Domain\FireCrawl\Requests\GetCrawlStatusRequest;

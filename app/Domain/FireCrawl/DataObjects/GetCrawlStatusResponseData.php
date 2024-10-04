@@ -2,7 +2,7 @@
 
 namespace App\Domain\FireCrawl\DataObjects;
 
-use App\Domain\FireCrawl\CrawlStatusEnum;
+use App\Domain\FireCrawl\Enums\CrawlStatusEnum;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 

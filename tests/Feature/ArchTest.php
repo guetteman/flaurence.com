@@ -4,7 +4,9 @@ use App\Providers\Filament\AdminPanelProvider;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 arch()->preset()->laravel()
-    ->ignoring(AdminPanelProvider::class);
+    ->ignoring(AdminPanelProvider::class)
+    ->ignoring('App\Domain\LaraGraph\Exceptions')
+    ->ignoring('App\Domain\FireCrawl\Enums');
 
 arch()->preset()->security();
 
