@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Domain\Graphs\Newsletter\NewsletterGraph;
 use App\Enums\FlowInputSchemaTypeEnum;
 use App\Enums\FlowOutputTypeEnum;
 use App\Enums\TextInputTypeEnum;
@@ -27,9 +28,11 @@ class FlowResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('external_id')
+                Forms\Components\Select::make('external_id')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        NewsletterGraph::ID => 'Personal Newsletter',
+                    ]),
                 Forms\Components\TextInput::make('short_description')
                     ->columnSpanFull()
                     ->required()

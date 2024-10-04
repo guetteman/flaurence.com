@@ -9,6 +9,8 @@ use App\Domain\LaraGraph\StateGraph;
 
 class NewsletterGraph
 {
+    public const ID = 'newsletter';
+
     public function invoke(array $input)
     {
         $graph = new StateGraph(NewsletterState::class);

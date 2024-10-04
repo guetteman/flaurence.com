@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Domain\Graphs\Newsletter\NewsletterGraph;
 use App\Enums\FlowOutputTypeEnum;
 use App\Models\Flow;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +20,7 @@ class FlowFactory extends Factory
     public function definition(): array
     {
         return [
-            'external_id' => $this->faker->uuid,
+            'external_id' => NewsletterGraph::ID,
             'name' => $this->faker->sentence,
             'short_description' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
