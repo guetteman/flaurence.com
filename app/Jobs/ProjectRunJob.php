@@ -11,9 +11,11 @@ class ProjectRunJob implements ShouldQueue
 {
     use Queueable;
 
-    public int $tries = 1;
+    public $tries = 1;
 
-    public int $timeout = 600;
+    public $timeout = 600;
+
+    public $maxExceptions = 1;
 
     public function __construct(
         public Project $project

@@ -28,7 +28,7 @@ class FirecrawlLoader extends DocumentLoader
             baseUrl: $this->baseUrl,
             token: $this->apiKey,
         );
-        $crawlRequest = new CrawlRequest($this->url);
+        $crawlRequest = new CrawlRequest(url: $this->url, limit: 2);
 
         /** @var CrawlResponseData $crawlJob */
         $crawlJob = $this->firecrawl->send($crawlRequest)->dto();
