@@ -43,8 +43,6 @@ export default function CreatePage() {
     input: {},
   });
 
-  console.log(flows.data);
-
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     post(route('projects.store'));

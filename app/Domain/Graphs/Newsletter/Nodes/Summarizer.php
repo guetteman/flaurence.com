@@ -15,16 +15,16 @@ class Summarizer extends Node
 {
     public function execute($state): NewsletterState
     {
-        $state->summarizedPages = $this->summarizePages($state->crawledPages);
+        $state->summarizedPages = $this->summarizePages($state->crawledPages, $state->topic);
 
         return $state;
     }
 
-    protected function summarizePages(array $pages): array
+    protected function summarizePages(array $pages, string $topic): array
     {
         $summaries = [];
         foreach ($pages as $pageData) {
-            $summaries[] = $this->summarizePage($pageData['topic'], $pageData);
+            $summaries[] = $this->summarizePage($topic, $pageData);
         }
 
         return $summaries;

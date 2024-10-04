@@ -17,13 +17,13 @@ class GetCrawlStatusRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/crawls/'.$this->id;
+        return '/crawl/'.$this->id;
     }
 
     public function createDtoFromResponse(Response $response): GetCrawlStatusResponseData
     {
-        $data = $response->json();
+        dump($response->json());
 
-        return GetCrawlStatusResponseData::from(data_get($data, 'data'));
+        return GetCrawlStatusResponseData::from($response->json());
     }
 }

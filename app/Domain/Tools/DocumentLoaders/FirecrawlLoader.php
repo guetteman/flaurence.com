@@ -19,12 +19,13 @@ class FirecrawlLoader extends DocumentLoader
     public function __construct(
         private readonly string $url,
         private readonly string $apiKey,
+        private readonly string $baseUrl = 'https://api.firecrawl.dev/v1',
     ) {}
 
     public function load(): GetCrawlStatusResponseData
     {
         $this->firecrawl = new FireCrawlConnector(
-            baseUrl: 'https://api.firecrawl.dev',
+            baseUrl: $this->baseUrl,
             token: $this->apiKey,
         );
         $crawlRequest = new CrawlRequest($this->url);

@@ -22,8 +22,6 @@ class CancelCrawlRequest extends Request
 
     public function createDtoFromResponse(Response $response): CancelCrawlResponseData
     {
-        $data = $response->json();
-
-        return CancelCrawlResponseData::from(data_get($data, 'data'));
+        return CancelCrawlResponseData::from($response->json());
     }
 }

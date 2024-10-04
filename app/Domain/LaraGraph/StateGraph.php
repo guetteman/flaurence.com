@@ -5,6 +5,7 @@ namespace App\Domain\LaraGraph;
 use App\Domain\LaraGraph\Checkpointers\Checkpointer;
 use App\Domain\LaraGraph\Checkpointers\NullCheckpointer;
 use App\Domain\LaraGraph\Exceptions\NodeIsNotReachableException;
+use App\Domain\LaraGraph\Nodes\StartNode;
 use InvalidArgumentException;
 
 class StateGraph
@@ -35,6 +36,7 @@ class StateGraph
     public function __construct(string $stateClass)
     {
         $this->stateClass = $stateClass;
+        $this->addNode(StateGraph::START, new StartNode);
     }
 
     /**
@@ -62,11 +64,11 @@ class StateGraph
      */
     public function addEdge(string $from, string $to): self
     {
-        if (! isset($this->nodes[$from])) {
+        if (! isset($this->nodes[$from]) && $from !== StateGraph::START) {
             throw new InvalidArgumentException("Node with name $from does not exist in the graph");
         }
 
-        if (! isset($this->nodes[$to])) {
+        if (! isset($this->nodes[$to]) && $to !== StateGraph::END) {
             throw new InvalidArgumentException("Node with name $to does not exist in the graph");
         }
 
@@ -159,16 +161,16 @@ class StateGraph
                 $currentNode = $this->entryPoint;
 
                 while ($currentNode !== $this->endPoint) {
+                    dump($currentNode, $state);
                     $nodeFunction = $this->nodeFunctions[$currentNode];
-                    $result = $nodeFunction($state);
-                    $state->update($result);
+                    $state = $nodeFunction($state);
 
                     $transitionFunction = $this->transitions[$currentNode];
                     $nextNode = $transitionFunction($state);
                     $currentNode = $nextNode;
                 }
 
-                return $state->getFinalOutput();
+                return $state;
             }
         };
     }

@@ -17,8 +17,8 @@ class CrawlRequest extends Request implements HasBody
 
     public function __construct(
         public string $url,
-        public array $excludePaths = [],
-        public array $includePaths = [],
+        public ?array $excludePaths = null,
+        public ?array $includePaths = null,
         public int $maxDepth = 2,
         public bool $ignoreSitemap = true,
         public int $limit = 10,
@@ -26,9 +26,8 @@ class CrawlRequest extends Request implements HasBody
         public bool $allowExternalLinks = false,
         public ?string $webhook = null,
         public array $scraperFormats = ['markdown'],
-        public array $scraperHeaders = [],
-        public array $scraperIncludeTags = [],
-        public array $scraperExcludeTags = [],
+        public ?array $scraperIncludeTags = null,
+        public ?array $scraperExcludeTags = null,
         public bool $scraperOnlyMainContent = true,
         public int $scraperWaitFor = 123,
     ) {}
@@ -40,31 +39,34 @@ class CrawlRequest extends Request implements HasBody
 
     public function createDtoFromResponse(Response $response): CrawlResponseData
     {
-        $data = $response->json();
-
-        return CrawlResponseData::from(data_get($data, 'data'));
+        return CrawlResponseData::from($response->json());
     }
 
     protected function defaultBody(): array
     {
-        return [
-            'url' => $this->url,
-            'excludePaths' => $this->excludePaths,
-            'includePaths' => $this->includePaths,
-            'maxDepth' => $this->maxDepth,
-            'ignoreSitemap' => $this->ignoreSitemap,
-            'limit' => $this->limit,
-            'allowBackwardLinks' => $this->allowBackwardLinks,
-            'allowExternalLinks' => $this->allowExternalLinks,
-            'webhook' => $this->webhook,
-            'scraperOptions' => [
-                'formats' => $this->scraperFormats,
-                'headers' => $this->scraperHeaders,
-                'includeTags' => $this->scraperIncludeTags,
-                'excludeTags' => $this->scraperExcludeTags,
-                'onlyMainContent' => $this->scraperOnlyMainContent,
-                'waitFor' => $this->scraperWaitFor,
+        return array_merge(
+            [
+                'url' => $this->url,
+                'maxDepth' => $this->maxDepth,
+                'ignoreSitemap' => $this->ignoreSitemap,
+                'limit' => $this->limit,
+                'allowBackwardLinks' => $this->allowBackwardLinks,
+                'allowExternalLinks' => $this->allowExternalLinks,
             ],
-        ];
+            array_filter([
+                'excludePaths' => $this->excludePaths,
+                'includePaths' => $this->includePaths,
+                'webhook' => $this->webhook,
+            ]),
+            [
+                'scrapeOptions' => array_filter([
+                    'formats' => $this->scraperFormats,
+                    'onlyMainContent' => $this->scraperOnlyMainContent,
+                    'waitFor' => $this->scraperWaitFor,
+                    'includeTags' => $this->scraperIncludeTags,
+                    'excludeTags' => $this->scraperExcludeTags,
+                ]),
+            ]
+        );
     }
 }

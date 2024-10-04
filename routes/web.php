@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RunController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,5 +16,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/projects/create', 'create')->name('projects.create');
         Route::post('/projects', 'store')->name('projects.store');
         Route::get('/projects/{project}', 'show')->name('projects.show');
+    });
+
+    Route::controller(RunController::class)->group(function () {
+        Route::post('/projects/{project}/runs', 'store')->name('runs.store');
     });
 });

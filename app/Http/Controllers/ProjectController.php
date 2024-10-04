@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Resources\FlowResource;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\RunResource;
 use App\Models\Flow;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
@@ -40,8 +41,11 @@ class ProjectController extends Controller
 
     public function show(Project $project): Response|ResponseFactory
     {
+        $runs = $project->runs()->latest()->get();
+
         return inertia('Projects/ShowPage', [
             'project' => new ProjectResource($project->load('flow')),
+            'runs' => RunResource::collection($runs),
         ]);
     }
 }

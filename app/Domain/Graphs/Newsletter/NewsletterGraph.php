@@ -11,7 +11,7 @@ class NewsletterGraph
 {
     public const ID = 'newsletter';
 
-    public function invoke(array $input)
+    public function invoke(array $input): NewsletterState
     {
         $graph = new StateGraph(NewsletterState::class);
 

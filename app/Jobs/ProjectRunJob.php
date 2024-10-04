@@ -11,6 +11,10 @@ class ProjectRunJob implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 1;
+
+    public int $timeout = 600;
+
     public function __construct(
         public Project $project
     ) {}
@@ -21,12 +25,12 @@ class ProjectRunJob implements ShouldQueue
             'status' => RunStatusEnum::Running,
         ]);
 
-        $output = app($this->project->flow->external_id)
+        $state = app($this->project->flow->external_id)
             ->invoke($this->project->input);
 
         $run->update([
             'status' => RunStatusEnum::Completed,
-            'output' => ['markdown' => $output],
+            'output' => ['markdown' => $state->output],
         ]);
     }
 }

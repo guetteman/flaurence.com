@@ -36,7 +36,7 @@ return [
     ],
 
     'firecrawl' => [
-        'base_url' => env('FIRECRAWL_BASE_URL', 'https://api.firecrawl.dev'),
+        'base_url' => env('FIRECRAWL_BASE_URL', 'https://api.firecrawl.dev/v1'),
         'api_key' => env('FIRECRAWL_API_KEY'),
     ],
 ];

@@ -27,9 +27,7 @@ class ExtractRequest extends Request implements HasBody
 
     public function createDtoFromResponse(Response $response): ExtractResponseData
     {
-        $data = $response->json();
-
-        return ExtractResponseData::from(data_get($data, 'data'));
+        return ExtractResponseData::from($response->json());
     }
 
     protected function defaultBody(): array

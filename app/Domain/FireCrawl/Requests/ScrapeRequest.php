@@ -26,9 +26,7 @@ class ScrapeRequest extends Request implements HasBody
 
     public function createDtoFromResponse(Response $response): ScrapeResponseData
     {
-        $data = $response->json();
-
-        return ScrapeResponseData::from(data_get($data, 'data'));
+        return ScrapeResponseData::from($response->json());
     }
 
     protected function defaultBody(): array

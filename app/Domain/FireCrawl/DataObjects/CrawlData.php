@@ -11,7 +11,7 @@ class CrawlData extends Data
         public ?string $html,
         public ?string $rawHtml,
         /** @var array<int, string> */
-        public array $links,
+        public ?array $links,
         public ?string $screenshot,
         public CrawlMetadataData $metadata,
     ) {}

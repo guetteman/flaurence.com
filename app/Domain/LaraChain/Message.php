@@ -14,8 +14,11 @@ class Message
         return new Message($role, $message);
     }
 
-    public function format(array $inputs): string
+    public function format(array $inputs): array
     {
-        return str_replace(array_keys($inputs), array_values($inputs), $this->message);
+        return [
+            'role' => $this->role,
+            'content' => str_replace(array_keys($inputs), array_values($inputs), $this->message),
+        ];
     }
 }

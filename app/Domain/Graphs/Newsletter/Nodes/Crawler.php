@@ -34,7 +34,11 @@ class Crawler extends Node
 
     protected function loadUrl(string $url): array
     {
-        $loader = new FirecrawlLoader($url, config()->string('services.firecrawl.api_key'));
+        $loader = new FirecrawlLoader(
+            url: $url,
+            apiKey: config()->string('services.firecrawl.api_key'),
+            baseUrl: config()->string('services.firecrawl.base_url'),
+        );
         $result = $loader->load();
 
         return collect($result->data)->map(function (CrawlData $data) {
