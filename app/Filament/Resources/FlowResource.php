@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Domain\Graphs\Newsletter\NewsletterGraph;
-use App\Enums\FlowInputSchemaTypeEnum;
 use App\Enums\FlowOutputTypeEnum;
-use App\Enums\TextInputTypeEnum;
 use App\Filament\Resources\FlowResource\Pages;
 use App\Models\Flow;
 use Filament\Forms;
@@ -13,7 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class FlowResource extends Resource
 {
@@ -40,45 +37,6 @@ class FlowResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Builder::make('input_schema')
-                    ->required()
-                    ->columnSpanFull()
-                    ->blocks([
-                        Forms\Components\Builder\Block::make(FlowInputSchemaTypeEnum::TextInput->value)
-                            ->label(FlowInputSchemaTypeEnum::TextInput->getLabel())
-                            ->schema([
-                                Forms\Components\TextInput::make('id')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->readOnly()
-                                    ->default(fn () => Str::uuid()->toString()),
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('description')
-                                    ->required(),
-                                Forms\Components\Select::make('type')
-                                    ->required()
-                                    ->options(TextInputTypeEnum::class),
-                            ]),
-
-                        Forms\Components\Builder\Block::make(FlowInputSchemaTypeEnum::ArrayInput->value)
-                            ->label(FlowInputSchemaTypeEnum::ArrayInput->getLabel())
-                            ->schema([
-                                Forms\Components\TextInput::make('id')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->readOnly()
-                                    ->default(fn () => Str::uuid()->toString()),
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('description')
-                                    ->required(),
-                                Forms\Components\Textarea::make('placeholder')
-                                    ->required(),
-                            ]),
-                    ]),
                 Forms\Components\Select::make('output_type')
                     ->required()
                     ->options(FlowOutputTypeEnum::class)

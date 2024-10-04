@@ -17,12 +17,11 @@ export type FlowResourceData = {
 
 type InputSchema = {
   type: 'text_input' | 'array_input';
-  data: {
-    id: string;
-    name: string;
-    placeholder?: string;
-    description?: string;
-    type?: string;
-    [key: string]: unknown;
-  };
+  key: string;
+  label: string;
+  input_type?: string;
+  placeholder?: string;
+  description?: string;
+  required?: boolean;
+  minLength?: number;
 };

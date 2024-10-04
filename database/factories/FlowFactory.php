@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Domain\Graphs\Newsletter\NewsletterGraph;
 use App\Enums\FlowOutputTypeEnum;
+use App\InputSchemas\NewsletterInput;
 use App\Models\Flow;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +27,7 @@ class FlowFactory extends Factory
             'description' => $this->faker->paragraph,
             'version' => '1.0.0',
             'enabled' => true,
-            'input_schema' => [],
+            'input_schema' => NewsletterInput::schema(),
             'output_type' => FlowOutputTypeEnum::Markdown,
         ];
     }

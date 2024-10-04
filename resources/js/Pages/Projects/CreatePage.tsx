@@ -43,6 +43,8 @@ export default function CreatePage() {
     input: {},
   });
 
+  console.log(flows.data);
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     post(route('projects.store'));
@@ -116,7 +118,7 @@ export default function CreatePage() {
           </FormField>
 
           <AnimatePresence>
-            {selectedFlow?.input_schema.map((item, key) => {
+            {selectedFlow?.input_schema.map((item) => {
               if (item.type === 'text_input') {
                 return (
                   <FormField
@@ -124,27 +126,26 @@ export default function CreatePage() {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    key={item.data.id}
+                    key={item.key}
                   >
-                    <FormLabel htmlFor={item.data.id}>
-                      {item.data.name}
-                    </FormLabel>
+                    <FormLabel htmlFor={item.key}>{item.label}</FormLabel>
                     <FormControl>
                       <Input
-                        id={item.data.id}
-                        name={item.data.id}
-                        type="email"
-                        value={data.input[item.data.name] as string}
+                        id={item.key}
+                        name={item.key}
+                        type={item.input_type ?? 'text'}
+                        value={data.input[item.key] as string}
                         onChange={(e) =>
                           setData('input', {
                             ...data.input,
-                            [item.data.id]: e.target.value,
+                            [item.key]: e.target.value,
                           })
                         }
-                        placeholder="name@example.com"
-                        required
+                        placeholder={item.placeholder}
+                        required={item.required}
                       />
                     </FormControl>
+                    <FormError error={errors.input} />
                   </FormField>
                 );
               }
@@ -156,27 +157,27 @@ export default function CreatePage() {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    key={item.data.id}
+                    key={item.key}
                   >
-                    <FormLabel htmlFor={item.data.id}>
-                      {item.data.name}
-                    </FormLabel>
+                    <FormLabel htmlFor={item.key}>{item.label}</FormLabel>
                     <FormControl>
                       <Textarea
                         rows={3}
-                        value={data.input[item.data.name] as string}
+                        value={data.input[item.key] as string}
                         onChange={(e) =>
                           setData('input', {
                             ...data.input,
-                            [item.data.id]: e.target.value
+                            [item.key]: e.target.value
                               .replace(' ', '')
                               .split('\n'),
                           })
                         }
-                        placeholder={item.data.placeholder}
+                        placeholder={item.placeholder}
+                        required={item.required}
                       />
                     </FormControl>
-                    <FormDescription>{item.data.description}</FormDescription>
+                    <FormError error={errors.input} />
+                    <FormDescription>{item.description}</FormDescription>
                   </FormField>
                 );
               }

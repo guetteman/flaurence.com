@@ -26,7 +26,7 @@ class ProjectRunJob implements ShouldQueue
 
         $run->update([
             'status' => RunStatusEnum::Completed,
-            'output' => ['newsletter' => $output],
+            'output' => ['markdown' => $output],
         ]);
     }
 }
