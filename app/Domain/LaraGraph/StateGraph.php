@@ -161,7 +161,6 @@ class StateGraph
                 $currentNode = $this->entryPoint;
 
                 while ($currentNode !== $this->endPoint) {
-                    dump($currentNode, $state);
                     $nodeFunction = $this->nodeFunctions[$currentNode];
                     $state = $nodeFunction($state);
 

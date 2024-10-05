@@ -22,7 +22,7 @@ class FirecrawlLoader extends DocumentLoader
         private readonly string $baseUrl = 'https://api.firecrawl.dev/v1',
     ) {}
 
-    public function load(): GetCrawlStatusResponseData
+    public function load(): ?GetCrawlStatusResponseData
     {
         $this->firecrawl = new FireCrawlConnector(
             baseUrl: $this->baseUrl,
@@ -32,6 +32,10 @@ class FirecrawlLoader extends DocumentLoader
 
         /** @var CrawlResponseData $crawlJob */
         $crawlJob = $this->firecrawl->send($crawlRequest)->dto();
+
+        if ($crawlJob->error) {
+            return null;
+        }
 
         return $this->getCrawlResults($crawlJob->id);
     }

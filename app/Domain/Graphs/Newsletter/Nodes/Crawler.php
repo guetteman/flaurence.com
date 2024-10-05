@@ -26,13 +26,15 @@ class Crawler extends Node
 
         foreach ($urls as $url) {
             $document = $this->loadUrl($url);
-            $allDocuments = array_merge($allDocuments, $document);
+            if ($document !== null) {
+                $allDocuments = array_merge($allDocuments, $document);
+            }
         }
 
         return $allDocuments;
     }
 
-    protected function loadUrl(string $url): array
+    protected function loadUrl(string $url): ?array
     {
         $loader = new FirecrawlLoader(
             url: $url,
@@ -40,6 +42,10 @@ class Crawler extends Node
             baseUrl: config()->string('services.firecrawl.base_url'),
         );
         $result = $loader->load();
+
+        if ($result === null) {
+            return null;
+        }
 
         return collect($result->data)->map(function (CrawlData $data) {
             return [

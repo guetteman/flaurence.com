@@ -30,14 +30,16 @@ class RunResource extends JsonResource
         ];
     }
 
-    public function outputToHtml(): array
+    public function outputToHtml(): ?array
     {
         $output = $this->output;
 
         if (isset($this->output['markdown'])) {
             $output['markdown'] = app(MarkdownRenderer::class)->toHtml($this->output['markdown']);
+
             return $output;
         }
+
         return $output;
     }
 }

@@ -22,8 +22,6 @@ class GetCrawlStatusRequest extends Request
 
     public function createDtoFromResponse(Response $response): GetCrawlStatusResponseData
     {
-        dump($response->json());
-
         return GetCrawlStatusResponseData::from($response->json());
     }
 }

@@ -8,7 +8,8 @@ class CrawlResponseData extends Data
 {
     public function __construct(
         public bool $success,
-        public string $id,
-        public string $url,
+        public ?string $id,
+        public ?string $url,
+        public ?string $error,
     ) {}
 }
