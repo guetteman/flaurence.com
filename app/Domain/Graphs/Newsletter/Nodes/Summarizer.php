@@ -20,6 +20,10 @@ class Summarizer extends Node
         return $state;
     }
 
+    /**
+     * @param  array<array<string, string>>  $pages
+     * @return array<array<string, string>>
+     */
     protected function summarizePages(array $pages, string $topic): array
     {
         $summaries = [];
@@ -30,6 +34,10 @@ class Summarizer extends Node
         return $summaries;
     }
 
+    /**
+     * @param  array<string, string>  $pageData
+     * @return array<string, string>
+     */
     protected function summarizePage(string $topic, array $pageData): array
     {
         $llm = new OpenAILLM;

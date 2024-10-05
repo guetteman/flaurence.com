@@ -19,6 +19,9 @@ class Crawler extends Node
         return $state;
     }
 
+    /**
+     * @return array<array<string, string>>
+     */
     protected function loadUrls(NewsletterState $state): array
     {
         $urls = $state->urls;
@@ -34,6 +37,9 @@ class Crawler extends Node
         return $allDocuments;
     }
 
+    /**
+     * @return array<array<string, string>>|null
+     */
     protected function loadUrl(string $url): ?array
     {
         $loader = new FirecrawlLoader(

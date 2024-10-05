@@ -17,7 +17,9 @@ class CrawlRequest extends Request implements HasBody
 
     public function __construct(
         public string $url,
+        /** @var array<string> */
         public ?array $excludePaths = null,
+        /** @var array<string> */
         public ?array $includePaths = null,
         public int $maxDepth = 2,
         public bool $ignoreSitemap = true,
@@ -25,8 +27,11 @@ class CrawlRequest extends Request implements HasBody
         public bool $allowBackwardLinks = false,
         public bool $allowExternalLinks = false,
         public ?string $webhook = null,
+        /** @var array<string> */
         public array $scraperFormats = ['markdown'],
+        /** @var array<string> */
         public ?array $scraperIncludeTags = null,
+        /** @var array<string> */
         public ?array $scraperExcludeTags = null,
         public bool $scraperOnlyMainContent = true,
         public int $scraperWaitFor = 123,
@@ -42,6 +47,9 @@ class CrawlRequest extends Request implements HasBody
         return CrawlResponseData::from($response->json());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return array_merge(

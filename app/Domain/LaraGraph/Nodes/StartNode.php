@@ -7,6 +7,7 @@ use App\Domain\LaraGraph\State;
 
 /**
  * @template TState of State
+ *
  * @extends Node<TState>
  */
 class StartNode extends Node

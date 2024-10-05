@@ -29,6 +29,9 @@ class ScrapeRequest extends Request implements HasBody
         return ScrapeResponseData::from($response->json());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

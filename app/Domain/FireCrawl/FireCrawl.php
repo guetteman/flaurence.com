@@ -2,9 +2,7 @@
 
 namespace App\Domain\FireCrawl;
 
-use App\Domain\FireCrawl\DataObjects\ExtractResponseData;
 use App\Domain\FireCrawl\DataObjects\ScrapeResponseData;
-use App\Domain\FireCrawl\Requests\ExtractRequest;
 use App\Domain\FireCrawl\Requests\ScrapeRequest;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
@@ -23,17 +21,6 @@ class FireCrawl
     {
         return $this->connector
             ->send(new ScrapeRequest($url))
-            ->dto();
-    }
-
-    /**
-     * @throws FatalRequestException
-     * @throws RequestException
-     */
-    public function extract(string $url, string $prompt): ExtractResponseData
-    {
-        return $this->connector
-            ->send(new ExtractRequest($url, $prompt))
             ->dto();
     }
 }

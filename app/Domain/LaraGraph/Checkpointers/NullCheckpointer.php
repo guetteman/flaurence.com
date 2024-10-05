@@ -6,6 +6,7 @@ use App\Domain\LaraGraph\State;
 
 /**
  * @template TState of State
+ *
  * @extends Checkpointer<TState>
  */
 class NullCheckpointer extends Checkpointer

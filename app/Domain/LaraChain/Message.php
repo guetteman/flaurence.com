@@ -14,6 +14,10 @@ class Message
         return new Message($role, $message);
     }
 
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array<string, string>
+     */
     public function format(array $inputs): array
     {
         return [

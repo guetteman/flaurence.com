@@ -5,12 +5,18 @@ namespace App\Domain\Graphs\Newsletter;
 use App\Domain\Graphs\Newsletter\Nodes\Crawler;
 use App\Domain\Graphs\Newsletter\Nodes\Summarizer;
 use App\Domain\Graphs\Newsletter\Nodes\Writer;
+use App\Domain\LaraGraph\Exceptions\NodeIsNotReachableException;
 use App\Domain\LaraGraph\StateGraph;
 
 class NewsletterGraph
 {
     public const ID = 'newsletter';
 
+    /**
+     * @param  array<string, mixed>  $input
+     *
+     * @throws NodeIsNotReachableException
+     */
     public function invoke(array $input): NewsletterState
     {
         $graph = new StateGraph(NewsletterState::class);

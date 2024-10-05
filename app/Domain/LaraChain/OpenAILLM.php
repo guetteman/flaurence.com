@@ -10,7 +10,7 @@ class OpenAILLM extends LLM
         protected string $model = 'gpt-4o-mini'
     ) {}
 
-    public function generate(array $prompt): string
+    public function generate($prompt): string
     {
         $result = OpenAI::chat()->create([
             'model' => $this->model,
