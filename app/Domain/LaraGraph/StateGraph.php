@@ -8,6 +8,9 @@ use App\Domain\LaraGraph\Exceptions\NodeIsNotReachableException;
 use App\Domain\LaraGraph\Nodes\StartNode;
 use InvalidArgumentException;
 
+/**
+ * @template TState extends State
+ */
 class StateGraph
 {
     const START = 'START';
@@ -15,7 +18,7 @@ class StateGraph
     const END = 'END';
 
     /**
-     * @var array<string, Node>
+     * @var array<string, Node<TState>>
      */
     private array $nodes = [];
 
@@ -29,10 +32,13 @@ class StateGraph
     private string $endPoint = 'END';
 
     /**
-     * @var class-string
+     * @var class-string<TState>
      */
     private string $stateClass;
 
+    /**
+     * @param  class-string<TState>  $stateClass
+     */
     public function __construct(string $stateClass)
     {
         $this->stateClass = $stateClass;
@@ -43,7 +49,8 @@ class StateGraph
      * Add a new node to the graph
      *
      * @param  string  $name  The name of the node
-     * @param  Node  $node  The class to be executed when this node is reached
+     * @param  Node<TState>  $node  The class to be executed when this node is reached
+     * @return self<TState>
      */
     public function addNode(string $name, Node $node): self
     {
@@ -61,6 +68,7 @@ class StateGraph
      *
      * @param  string  $from  The name of the source node
      * @param  string  $to  The name of the destination node
+     * @return self<TState>
      */
     public function addEdge(string $from, string $to): self
     {
@@ -85,6 +93,7 @@ class StateGraph
      * Set the entry point of the graph
      *
      * @param  string  $nodeName  The name of the node to set as entry point
+     * @return self<TState>
      */
     public function setEntryPoint(string $nodeName): self
     {
@@ -101,6 +110,7 @@ class StateGraph
      * Set the end point of the graph
      *
      * @param  string  $nodeName  The name of the node to set as end point
+     * @return self<TState>
      */
     public function setEndPoint(string $nodeName): self
     {
@@ -113,7 +123,12 @@ class StateGraph
         return $this;
     }
 
-    public function compile(?Checkpointer $checkpointer = null): object
+    /**
+     * @return StateGraphRunner<TState>
+     *
+     * @throws NodeIsNotReachableException
+     */
+    public function compile(?Checkpointer $checkpointer = null): StateGraphRunner
     {
         $checkpointer = $checkpointer ?? new NullCheckpointer;
 
@@ -133,45 +148,7 @@ class StateGraph
         // Create transition functions
         $transitions = $this->createTransitions();
 
-        // Create the final runnable
-        return new class($nodeFunctions, $transitions, $this->entryPoint, $this->endPoint, $this->stateClass)
-        {
-            private $nodeFunctions;
-
-            private $transitions;
-
-            private $entryPoint;
-
-            private $endPoint;
-
-            private $stateClass;
-
-            public function __construct($nodeFunctions, $transitions, $entryPoint, $endPoint, $stateClass)
-            {
-                $this->nodeFunctions = $nodeFunctions;
-                $this->transitions = $transitions;
-                $this->entryPoint = $entryPoint;
-                $this->endPoint = $endPoint;
-                $this->stateClass = $stateClass;
-            }
-
-            public function invoke($input)
-            {
-                $state = new $this->stateClass($input);
-                $currentNode = $this->entryPoint;
-
-                while ($currentNode !== $this->endPoint) {
-                    $nodeFunction = $this->nodeFunctions[$currentNode];
-                    $state = $nodeFunction($state);
-
-                    $transitionFunction = $this->transitions[$currentNode];
-                    $nextNode = $transitionFunction($state);
-                    $currentNode = $nextNode;
-                }
-
-                return $state;
-            }
-        };
+        return new StateGraphRunner($nodeFunctions, $transitions, $this->entryPoint, $this->endPoint, $this->stateClass);
     }
 
     /**
@@ -195,11 +172,15 @@ class StateGraph
         }
     }
 
-    private function dfs($node, &$visited): void
+    /**
+     * @param  string  $nodeName
+     * @param  array<string, bool>  $visited
+     */
+    private function dfs(string $nodeName, array &$visited): void
     {
-        $visited[$node] = true;
-        if (isset($this->edges[$node])) {
-            foreach ($this->edges[$node] as $nextNode) {
+        $visited[$nodeName] = true;
+        if (isset($this->edges[$nodeName])) {
+            foreach ($this->edges[$nodeName] as $nextNode) {
                 if (! isset($visited[$nextNode])) {
                     $this->dfs($nextNode, $visited);
                 }
@@ -207,6 +188,9 @@ class StateGraph
         }
     }
 
+    /**
+     * @return array<string, callable(TState): string>
+     */
     private function createTransitions(): array
     {
         $transitions = [];

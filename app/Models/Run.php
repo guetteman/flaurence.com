@@ -24,7 +24,7 @@ class Run extends Model
     ];
 
     /**
-     * @return BelongsTo<Project>
+     * @return BelongsTo<Project, self>
      */
     public function project(): BelongsTo
     {

@@ -4,6 +4,9 @@ namespace App\InputSchemas;
 
 class NewsletterInput
 {
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public static function schema(): array
     {
         return [

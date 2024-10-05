@@ -40,7 +40,7 @@ class FirecrawlLoader extends DocumentLoader
         return $this->getCrawlResults($crawlJob->id);
     }
 
-    protected function getCrawlResults(string $crawlJobId, $results = []): GetCrawlStatusResponseData
+    protected function getCrawlResults(string $crawlJobId): GetCrawlStatusResponseData
     {
         $getCrawlStatusRequest = new GetCrawlStatusRequest($crawlJobId);
         /** @var GetCrawlStatusResponseData $crawlStatus */
@@ -49,7 +49,7 @@ class FirecrawlLoader extends DocumentLoader
         if ($crawlStatus->status === CrawlStatusEnum::Scraping) {
             sleep(3);
 
-            return $this->getCrawlResults($crawlJobId, $results);
+            return $this->getCrawlResults($crawlJobId);
         }
 
         return $crawlStatus;

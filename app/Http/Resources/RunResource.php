@@ -22,7 +22,7 @@ class RunResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'output' => $this->outputToHtml(),
+            'output' => $this->formattedOutput(),
             'error' => $this->error,
             'project_id' => $this->project_id,
             'project' => new ProjectResource($this->project),
@@ -30,7 +30,10 @@ class RunResource extends JsonResource
         ];
     }
 
-    public function outputToHtml(): ?array
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function formattedOutput(): ?array
     {
         $output = $this->output;
 
