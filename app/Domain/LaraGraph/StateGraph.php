@@ -162,16 +162,16 @@ class StateGraph
     {
         // Check if all nodes are connected
         $visited = [];
-        $this->dfs($this->entryPoint, $visited);
+        $this->traverseAndMarkReachableNodes($this->entryPoint, $visited);
 
         foreach ($this->nodes as $nodeName => $node) {
-            if (! isset($visited[$nodeName])) {
+            if (! isset($visited[$nodeName]) || $visited[$nodeName] === false) {
                 throw new NodeIsNotReachableException("Node '$nodeName' is not reachable from the entry point.");
             }
         }
 
         // Check if end point is reachable
-        if (! isset($visited[$this->endPoint])) {
+        if (! isset($visited[$this->endPoint]) || $visited[$this->endPoint] === false) {
             throw new NodeIsNotReachableException('End point is not reachable from the entry point.');
         }
     }
@@ -179,13 +179,13 @@ class StateGraph
     /**
      * @param  array<string, bool>  $visited
      */
-    private function dfs(string $nodeName, array &$visited): void
+    private function traverseAndMarkReachableNodes(string $nodeName, array &$visited): void
     {
         $visited[$nodeName] = true;
         if (isset($this->edges[$nodeName])) {
             foreach ($this->edges[$nodeName] as $nextNode) {
                 if (! isset($visited[$nextNode])) {
-                    $this->dfs($nextNode, $visited);
+                    $this->traverseAndMarkReachableNodes($nextNode, $visited);
                 }
             }
         }
