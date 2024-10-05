@@ -2,6 +2,7 @@
 
 namespace App\Domain\FireCrawl\Requests;
 
+use App\Domain\FireCrawl\DataObjects\CrawlOptionsData;
 use App\Domain\FireCrawl\DataObjects\CrawlResponseData;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -16,26 +17,11 @@ class CrawlRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     public function __construct(
-        public string $url,
-        /** @var array<string> */
-        public ?array $excludePaths = null,
-        /** @var array<string> */
-        public ?array $includePaths = null,
-        public int $maxDepth = 2,
-        public bool $ignoreSitemap = true,
-        public int $limit = 10,
-        public bool $allowBackwardLinks = false,
-        public bool $allowExternalLinks = false,
-        public ?string $webhook = null,
-        /** @var array<string> */
-        public array $scraperFormats = ['markdown'],
-        /** @var array<string> */
-        public ?array $scraperIncludeTags = null,
-        /** @var array<string> */
-        public ?array $scraperExcludeTags = null,
-        public bool $scraperOnlyMainContent = true,
-        public int $scraperWaitFor = 123,
-    ) {}
+        protected readonly string $url,
+        protected ?CrawlOptionsData $options = null,
+    ) {
+        $this->options = $this->options ?? new CrawlOptionsData;
+    }
 
     public function resolveEndpoint(): string
     {
@@ -55,24 +41,24 @@ class CrawlRequest extends Request implements HasBody
         return array_merge(
             [
                 'url' => $this->url,
-                'maxDepth' => $this->maxDepth,
-                'ignoreSitemap' => $this->ignoreSitemap,
-                'limit' => $this->limit,
-                'allowBackwardLinks' => $this->allowBackwardLinks,
-                'allowExternalLinks' => $this->allowExternalLinks,
+                'maxDepth' => $this->options->maxDepth,
+                'ignoreSitemap' => $this->options->ignoreSitemap,
+                'limit' => $this->options->limit,
+                'allowBackwardLinks' => $this->options->allowBackwardLinks,
+                'allowExternalLinks' => $this->options->allowExternalLinks,
             ],
             array_filter([
-                'excludePaths' => $this->excludePaths,
-                'includePaths' => $this->includePaths,
-                'webhook' => $this->webhook,
+                'excludePaths' => $this->options->excludePaths,
+                'includePaths' => $this->options->includePaths,
+                'webhook' => $this->options->webhook,
             ]),
             [
                 'scrapeOptions' => array_filter([
-                    'formats' => $this->scraperFormats,
-                    'onlyMainContent' => $this->scraperOnlyMainContent,
-                    'waitFor' => $this->scraperWaitFor,
-                    'includeTags' => $this->scraperIncludeTags,
-                    'excludeTags' => $this->scraperExcludeTags,
+                    'formats' => $this->options->scraperFormats,
+                    'onlyMainContent' => $this->options->scraperOnlyMainContent,
+                    'waitFor' => $this->options->scraperWaitFor,
+                    'includeTags' => $this->options->scraperIncludeTags,
+                    'excludeTags' => $this->options->scraperExcludeTags,
                 ]),
             ]
         );

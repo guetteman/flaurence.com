@@ -2,12 +2,14 @@
 
 namespace App\Domain\Tools\DocumentLoaders;
 
+use App\Domain\FireCrawl\DataObjects\CrawlOptionsData;
 use App\Domain\FireCrawl\DataObjects\CrawlResponseData;
 use App\Domain\FireCrawl\DataObjects\GetCrawlStatusResponseData;
 use App\Domain\FireCrawl\Enums\CrawlStatusEnum;
 use App\Domain\FireCrawl\FireCrawlConnector;
-use App\Domain\FireCrawl\Requests\CrawlRequest;
-use App\Domain\FireCrawl\Requests\GetCrawlStatusRequest;
+use Illuminate\Support\Sleep;
+use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
 
 /**
  * @extends DocumentLoader<GetCrawlStatusResponseData>
@@ -20,18 +22,25 @@ class FirecrawlLoader extends DocumentLoader
         private readonly string $url,
         private readonly string $apiKey,
         private readonly string $baseUrl = 'https://api.firecrawl.dev/v1',
+        private readonly int $limit = 3,
     ) {}
 
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
     public function load(): ?GetCrawlStatusResponseData
     {
         $this->firecrawl = new FireCrawlConnector(
             baseUrl: $this->baseUrl,
             token: $this->apiKey,
         );
-        $crawlRequest = new CrawlRequest(url: $this->url, limit: 2);
 
         /** @var CrawlResponseData $crawlJob */
-        $crawlJob = $this->firecrawl->send($crawlRequest)->dto();
+        $crawlJob = $this->firecrawl->crawl(
+            url: $this->url,
+            options: new CrawlOptionsData(limit: $this->limit)
+        )->dto();
 
         if ($crawlJob->error) {
             return null;
@@ -42,12 +51,11 @@ class FirecrawlLoader extends DocumentLoader
 
     protected function getCrawlResults(string $crawlJobId): GetCrawlStatusResponseData
     {
-        $getCrawlStatusRequest = new GetCrawlStatusRequest($crawlJobId);
         /** @var GetCrawlStatusResponseData $crawlStatus */
-        $crawlStatus = $this->firecrawl->send($getCrawlStatusRequest)->dto();
+        $crawlStatus = $this->firecrawl->getCrawlStatus($crawlJobId)->dto();
 
         if ($crawlStatus->status === CrawlStatusEnum::Scraping) {
-            sleep(3);
+            Sleep::for(3)->seconds();
 
             return $this->getCrawlResults($crawlJobId);
         }
