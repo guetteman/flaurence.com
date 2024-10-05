@@ -32,6 +32,14 @@ class Project extends Model
     }
 
     /**
+     * @return BelongsTo<User, self>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * @return HasMany<Run>
      */
     public function runs(): HasMany
