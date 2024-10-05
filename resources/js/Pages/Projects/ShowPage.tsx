@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { ProjectResource } from '@/types/projects';
 import type { RunResourceCollection } from '@/types/runs';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface ShowPageProps {
@@ -41,7 +41,14 @@ export default function ShowPage({ project, runs }: ShowPageProps) {
         <div className="mt-8">
           {runs.data.length > 0 &&
             runs.data.map((run) => (
-              <div key={run.id} className="flex items-center justify-between">
+              <Link
+                href={route('runs.show', {
+                  project: project.data.id,
+                  run: run.id,
+                })}
+                key={run.id}
+                className="flex items-center justify-between"
+              >
                 <div className="flex items-center space-x-2">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-50">
                     <PlayIcon className="h-4 w-4" />
@@ -51,7 +58,7 @@ export default function ShowPage({ project, runs }: ShowPageProps) {
                   </div>
                 </div>
                 <div className="text-sm text-gray-500">{run.created_at}</div>
-              </div>
+              </Link>
             ))}
         </div>
       </div>

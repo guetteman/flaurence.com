@@ -161,7 +161,9 @@ export default function CreatePage() {
                     <FormControl>
                       <Textarea
                         rows={3}
-                        value={data.input[item.key] as string}
+                        value={(data.input[item.key] as Array<string>)?.join(
+                          '\n',
+                        )}
                         onChange={(e) =>
                           setData('input', {
                             ...data.input,

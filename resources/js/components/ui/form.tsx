@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
-import {cn} from '@/lib/utils';
-import {motion} from 'framer-motion';
-import {type ComponentPropsWithRef, type ReactNode, forwardRef } from 'react';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { type ComponentPropsWithRef, type ReactNode, forwardRef } from 'react';
 
 const formField = forwardRef<HTMLDivElement, ComponentPropsWithRef<'div'>>(
   ({ children, className, ...props }, ref) => {
@@ -13,7 +13,7 @@ const formField = forwardRef<HTMLDivElement, ComponentPropsWithRef<'div'>>(
   },
 );
 
-const FormField = motion(formField);
+const FormField = motion.create(formField);
 
 function FormLabel({
   htmlFor,

@@ -20,5 +20,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(RunController::class)->group(function () {
         Route::post('/projects/{project}/runs', 'store')->name('runs.store');
+        Route::get('/projects/{project}/runs/{run}', 'show')->name('runs.show');
     });
 });

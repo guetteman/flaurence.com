@@ -37,6 +37,7 @@ class Writer extends Node
         Do not include any unnecessary information or irrelevant content.
         Keep the tone of the newsletter professional and informative.
         Make sure to include any relevant links or citations in the newsletter.
+        The current date is {date}.
         ';
 
         $promptTemplate = PromptTemplate::fromMessages([
@@ -46,6 +47,7 @@ class Writer extends Node
 
         return $llm->generate($promptTemplate->formatPrompt([
             'topic' => $topic,
+            'date' => now()->toFormattedDayDateString(),
         ]));
     }
 

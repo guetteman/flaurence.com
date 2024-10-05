@@ -34,7 +34,7 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
         <Separator className="mt-8" />
         <div className="mt-10">
           {projects.data.length ? (
-            <div className="grid grid-cols-1 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {projects.data.map((project) => (
                 <Link
                   key={project.id}
@@ -45,9 +45,6 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
                       <CardTitle>{project.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-sm font-bold uppercase text-gray-500">
-                        Flow
-                      </div>
                       <p className="text-sm text-gray-500">
                         {project.flow.name}
                       </p>
