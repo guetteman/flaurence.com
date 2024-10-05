@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Enums\RunStatusEnum;
-use App\Models\Project;
+use App\Models\Run;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Throwable;
@@ -17,25 +17,25 @@ class ProjectRunJob implements ShouldQueue
     public int $timeout = 600;
 
     public function __construct(
-        public Project $project
+        public Run $run
     ) {}
 
     public function handle(): void
     {
-        $run = $this->project->runs()->create([
+        $this->run->update([
             'status' => RunStatusEnum::Running,
         ]);
 
         try {
-            $state = app($this->project->flow->external_id)
-                ->invoke($this->project->input);
+            $state = app($this->run->project->flow->external_id)
+                ->invoke($this->run->project->input);
 
-            $run->update([
+            $this->run->update([
                 'status' => RunStatusEnum::Completed,
                 'output' => ['markdown' => $state->output],
             ]);
         } catch (Throwable $e) {
-            $run->update([
+            $this->run->update([
                 'status' => RunStatusEnum::Failed,
                 'error' => $e->getMessage(),
             ]);

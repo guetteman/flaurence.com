@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RunStatusEnum;
 use App\Http\Resources\RunResource;
 use App\Jobs\ProjectRunJob;
 use App\Models\Project;
@@ -14,7 +15,11 @@ class RunController extends Controller
 {
     public function store(Project $project): RedirectResponse
     {
-        ProjectRunJob::dispatch($project);
+        $run = $project->runs()->create([
+            'status' => RunStatusEnum::Queued,
+        ]);
+
+        ProjectRunJob::dispatch($run);
 
         return redirect()->route('projects.show', $project);
     }
