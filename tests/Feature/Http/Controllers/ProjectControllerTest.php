@@ -138,6 +138,7 @@ describe('ProjectController store', function () {
 describe('ProjectController show', function () {
     it('should show a project', function () {
         $project = Project::factory()
+            ->hasRuns(3)
             ->create()
             ->load('flow');
         $user = User::factory()->create();
@@ -147,6 +148,7 @@ describe('ProjectController show', function () {
             ->assertInertia(
                 fn (AssertableInertia $page) => $page
                     ->component('Projects/ShowPage')
+                    ->has('runs.data', 3)
                     ->has('project.data', fn (AssertableInertia $page) => $page
                         ->where('id', $project->id)
                         ->where('name', $project->name)
