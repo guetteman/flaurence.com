@@ -27,7 +27,7 @@ class Writer extends Node
         $references = $this->formatReferences($state);
         $topic = $state->topic;
 
-        $llm = new OpenAILLM;
+        $llm = new OpenAILLM(model: 'o1-preview');
 
         $systemPrompt = '
         You are a helpful assistant that writes a newsletter for a given topic.
@@ -41,7 +41,7 @@ class Writer extends Node
         ';
 
         $promptTemplate = PromptTemplate::fromMessages([
-            Message::make('system', "{$systemPrompt}"),
+            //            Message::make('system', "{$systemPrompt}"),
             Message::make('user', "{$references}\n\n{$instructions}\n\n"),
         ]);
 
@@ -65,8 +65,9 @@ class Writer extends Node
     protected function instructions(): string
     {
         return '
-            Use the references above to write a newsletter about {topic}.
+            Use the references above to write an engaging newsletter about {topic}.
             Each reference start at [START] and end at [END].
+            The current date is {date}.
         ';
     }
 }
