@@ -3,7 +3,7 @@
 namespace App\Domain\LaraGraph;
 
 /**
- * @template TState extends State
+ * @template TState of State
  */
 readonly class StateGraphRunner
 {

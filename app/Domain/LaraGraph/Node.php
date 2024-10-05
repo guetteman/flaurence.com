@@ -3,7 +3,7 @@
 namespace App\Domain\LaraGraph;
 
 /**
- * @template T extends State
+ * @template T of State
  */
 abstract class Node
 {

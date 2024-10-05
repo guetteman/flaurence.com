@@ -9,7 +9,7 @@ use App\Domain\LaraGraph\Nodes\StartNode;
 use InvalidArgumentException;
 
 /**
- * @template TState extends State
+ * @template TState of State
  */
 class StateGraph
 {
@@ -42,7 +42,10 @@ class StateGraph
     public function __construct(string $stateClass)
     {
         $this->stateClass = $stateClass;
-        $this->addNode(StateGraph::START, new StartNode);
+
+        /** @var StartNode<TState> $startNode */
+        $startNode = new StartNode;
+        $this->addNode(StateGraph::START, $startNode);
     }
 
     /**
@@ -124,13 +127,14 @@ class StateGraph
     }
 
     /**
+     * @param  Checkpointer<TState>|null  $checkpointer
      * @return StateGraphRunner<TState>
      *
      * @throws NodeIsNotReachableException
      */
     public function compile(?Checkpointer $checkpointer = null): StateGraphRunner
     {
-        $checkpointer = $checkpointer ?? new NullCheckpointer;
+        $checkpointer = $checkpointer ?? $this->getNullCheckpointer();
 
         $this->validateGraph();
 
@@ -173,7 +177,6 @@ class StateGraph
     }
 
     /**
-     * @param  string  $nodeName
      * @param  array<string, bool>  $visited
      */
     private function dfs(string $nodeName, array &$visited): void
@@ -207,5 +210,14 @@ class StateGraph
         }
 
         return $transitions;
+    }
+
+    /**
+     * @return Checkpointer<TState>
+     */
+    public function getNullCheckpointer(): Checkpointer
+    {
+        /** @var Checkpointer<TState> */
+        return new NullCheckpointer;
     }
 }
