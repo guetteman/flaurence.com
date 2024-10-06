@@ -43,10 +43,14 @@ export default function DashboardPage({ projects }: DashboardPageProps) {
                   <Card className="hover:bg-gray-50">
                     <CardHeader>
                       <CardTitle>{project.name}</CardTitle>
+                      <span className="text-sm text-muted-foreground">
+                        v{project.flow.version}
+                      </span>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-gray-500">
-                        {project.flow.name}
+                        <span className="font-bold">{project.flow.name}</span> -{' '}
+                        {project.flow.short_description}
                       </p>
                     </CardContent>
                   </Card>
