@@ -8,7 +8,7 @@ function Content({ run }: { run: RunResourceData }) {
       <RunStatusIcon status={run.status} />
       <div className="text-sm font-medium text-gray-900">
         {run.status_label}
-        <div className="text-sm text-gray-500">{run.created_at_human}</div>
+        <div className="text-sm text-gray-500">{run.updated_at_for_humans}</div>
       </div>
     </div>
   );

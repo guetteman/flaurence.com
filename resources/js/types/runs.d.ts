@@ -13,7 +13,8 @@ export type RunResourceData = {
   project_id: number;
   project: ProjectResourceData;
   created_at: string;
-  created_at_human: string;
+  created_at_for_humans: string;
+  updated_at_for_humans: string;
 };
 
 export type RunResourceCollection = {

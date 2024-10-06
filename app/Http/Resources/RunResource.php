@@ -28,7 +28,9 @@ class RunResource extends JsonResource
             'project_id' => $this->project_id,
             'project' => new ProjectResource($this->project),
             'created_at' => $this->created_at,
-            'created_at_human' => $this->created_at->diffForHumans(),
+            'created_at_for_humans' => $this->created_at->diffForHumans(),
+            'updated_at' => $this->updated_at,
+            'updated_at_for_humans' => $this->updated_at->diffForHumans(),
         ];
     }
 
