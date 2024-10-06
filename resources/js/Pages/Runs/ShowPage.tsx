@@ -13,7 +13,7 @@ export default function ShowPage({ run }: ShowPageProps) {
   const { slideUpInVariants } = useAnimationVariants();
 
   return (
-    <AnimatedContainer className="flex min-h-screen flex-col gap-32">
+    <AnimatedContainer className="flex min-h-screen flex-col">
       <Navbar />
       <div className="mx-auto mt-24 flex w-full max-w-7xl flex-col px-4">
         <motion.div
