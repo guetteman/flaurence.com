@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/app/navbar';
+import { RunListItem } from '@/components/app/pages/projects/run-list-item';
 import { PlayIcon } from '@/components/icons/play-icon';
 import { Button } from '@/components/ui/button';
 import { AnimatedContainer } from '@/components/ui/layout/animated-container';
@@ -6,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { ProjectResource } from '@/types/projects';
 import type { RunResourceCollection } from '@/types/runs';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface ShowPageProps {
@@ -38,29 +39,10 @@ export default function ShowPage({ project, runs }: ShowPageProps) {
           </Button>
         </motion.div>
         <Separator className="mt-8" />
-        <div className="mt-8">
+        <motion.div variants={slideUpInVariants} className="pb-32 pt-8">
           {runs.data.length > 0 &&
-            runs.data.map((run) => (
-              <Link
-                href={route('runs.show', {
-                  project: project.data.id,
-                  run: run.id,
-                })}
-                key={run.id}
-                className="flex items-center justify-between"
-              >
-                <div className="flex items-center space-x-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-50">
-                    <PlayIcon className="h-4 w-4" />
-                  </div>
-                  <div className="text-sm font-medium text-gray-900">
-                    {run.status}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-500">{run.created_at}</div>
-              </Link>
-            ))}
-        </div>
+            runs.data.map((run) => <RunListItem run={run} key={run.id} />)}
+        </motion.div>
       </div>
     </AnimatedContainer>
   );

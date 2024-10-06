@@ -7,11 +7,13 @@ export type RunResource = {
 export type RunResourceData = {
   id: number;
   status: string;
+  status_label: string;
   output: { [key: string]: unknown };
   error: string | null;
   project_id: number;
   project: ProjectResourceData;
   created_at: string;
+  created_at_human: string;
 };
 
 export type RunResourceCollection = {

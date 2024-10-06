@@ -22,11 +22,13 @@ class RunResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
+            'status_label' => $this->status->getLabel(),
             'output' => $this->formattedOutput(),
             'error' => $this->error,
             'project_id' => $this->project_id,
             'project' => new ProjectResource($this->project),
             'created_at' => $this->created_at,
+            'created_at_human' => $this->created_at->diffForHumans(),
         ];
     }
 
