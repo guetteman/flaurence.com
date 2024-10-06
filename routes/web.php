@@ -16,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/projects/create', 'create')->name('projects.create');
         Route::post('/projects', 'store')->name('projects.store');
         Route::get('/projects/{project}', 'show')->name('projects.show');
+        Route::get('/projects/{project}/edit', 'edit')->name('projects.edit');
+        Route::put('/projects/{project}', 'update')->name('projects.update');
     });
 
     Route::controller(RunController::class)->group(function () {

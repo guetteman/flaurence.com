@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Flow;
 use App\Models\Project;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
-covers(ProjectController::class, StoreProjectRequest::class);
+covers(ProjectController::class, StoreProjectRequest::class, UpdateProjectRequest::class);
 
 describe('ProjectController create', function () {
     it('should provide active flows', function () {
@@ -173,6 +174,130 @@ describe('ProjectController show', function () {
         $project = Project::factory()->create();
 
         $response = $this->get(route('projects.show', $project));
+
+        $response->assertRedirect(route('login'));
+    });
+});
+
+describe('ProjectController edit', function () {
+    it('should provide project', function () {
+        $project = Project::factory()->create();
+        $this->actingAs($project->user)
+            ->get(route('projects.edit', $project))
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
+                    ->component('Projects/EditPage')
+                    ->has('project.data', fn (AssertableInertia $page) => $page
+                        ->where('id', $project->id)
+                        ->where('name', $project->name)
+                        ->where('input', $project->input)
+                        ->where('cron_expression', $project->cron_expression)
+                        ->where('timezone', $project->timezone)
+                        ->where('user_id', $project->user_id)
+                        ->where('flow_id', $project->flow_id)
+                        ->has('flow', fn (AssertableInertia $page) => $page
+                            ->where('id', $project->flow->id)
+                            ->where('name', $project->flow->name)
+                            ->where('short_description', $project->flow->short_description)
+                            ->where('description', $project->flow->description)
+                            ->where('version', $project->flow->version)
+                            ->where('input_schema', $project->flow->input_schema)
+                        )
+                    )
+            );
+    });
+
+    it('should provide active flows', function () {
+        $enabledFlows = Flow::factory()->count(3)->enabled()->create();
+        Flow::factory()->count(2)->disabled()->create();
+        $project = Project::factory()
+            ->for($enabledFlows->first())
+            ->create();
+
+        $this->actingAs($project->user)
+            ->get(route('projects.edit', $project))
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
+                    ->component('Projects/EditPage')
+                    ->has('flows.data', 3)
+            );
+    });
+
+    it('redirects to login if user is not authenticated', function () {
+        $project = Project::factory()->create();
+
+        $response = $this->get(route('projects.edit', $project));
+
+        $response->assertRedirect(route('login'));
+    });
+});
+
+describe('ProjectController update', function () {
+    it('should update project', function () {
+        $project = Project::factory()->create([
+            'name' => 'My project',
+            'input' => ['hello' => 'world'],
+        ]);
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'Updated project',
+                'input' => ['foo' => 'bar'],
+            ])
+            ->assertRedirect(route('projects.show', $project));
+
+        $project->refresh();
+        expect($project->name)->toBe('Updated project')
+            ->and($project->input)->toBe(['foo' => 'bar']);
+    });
+
+    it('validates name is required', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'input' => ['foo' => 'bar'],
+            ])
+            ->assertSessionHasErrors('name');
+    });
+
+    it('validates name is a string', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 123,
+                'input' => ['foo' => 'bar'],
+            ])
+            ->assertSessionHasErrors('name');
+    });
+
+    it('validates name is not greater than 255 characters', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => str_repeat('a', 256),
+                'input' => ['foo' => 'bar'],
+            ])
+            ->assertSessionHasErrors('name');
+    });
+
+    it('validates input is an array', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'input' => 'not-an-array',
+            ])
+            ->assertSessionHasErrors('input');
+    });
+
+    it('redirects to login if user is not authenticated', function () {
+        $project = Project::factory()->create();
+
+        $response = $this->put(route('projects.update', $project));
 
         $response->assertRedirect(route('login'));
     });

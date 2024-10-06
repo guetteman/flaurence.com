@@ -1,13 +1,14 @@
 import { Navbar } from '@/components/app/navbar';
 import { RunListItem } from '@/components/app/pages/projects/run-list-item';
 import { PlayIcon } from '@/components/icons/play-icon';
-import { Button } from '@/components/ui/button';
+import { Settings02Icon } from '@/components/icons/settings-02-icon';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { AnimatedContainer } from '@/components/ui/layout/animated-container';
 import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { ProjectResource } from '@/types/projects';
 import type { RunResourceCollection } from '@/types/runs';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface ShowPageProps {
@@ -33,10 +34,18 @@ export default function ShowPage({ project, runs }: ShowPageProps) {
           <h1 className="text-3xl font-extrabold tracking-tight lg:text-2xl">
             {project.data.name}
           </h1>
-          <Button onClick={run}>
-            <PlayIcon className="mr-2 size-4" />
-            Run
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link
+              href={route('projects.edit', project.data.id)}
+              className={buttonVariants({ variant: 'secondary', size: 'icon' })}
+            >
+              <Settings02Icon className="size-4" />
+            </Link>
+            <Button onClick={run}>
+              <PlayIcon className="mr-2 size-4" />
+              Run
+            </Button>
+          </div>
         </motion.div>
         <Separator className="mt-8" />
         <motion.div variants={slideUpInVariants} className="pb-32 pt-8">

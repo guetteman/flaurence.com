@@ -12,33 +12,29 @@ import { Input } from '@/components/ui/input';
 import { AnimatedContainer } from '@/components/ui/layout/animated-container';
 import { Textarea } from '@/components/ui/textarea';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
-import type { FlowResourceCollection, FlowResourceData } from '@/types/flows';
-import { useForm, usePage } from '@inertiajs/react';
+import type { ProjectResource } from '@/types/projects';
+import { useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { type FormEvent, useState } from 'react';
+import type { FormEvent } from 'react';
+
+interface EditPageProps {
+  project: ProjectResource;
+}
 
 interface FormDataType {
   name: string;
-  flow_id: string;
   input: Record<string, unknown>;
 }
 
-export default function CreatePage() {
+export default function EditPage({ project }: EditPageProps) {
   const { slideUpInVariants, slideDownInVariants } = useAnimationVariants();
-  const [selectedFlow, setSelectedFlow] = useState<
-    FlowResourceData | undefined
-  >();
-  const { flows } = usePage<{ flows: FlowResourceCollection }>().props;
-
-  const { data, setData, errors, post, processing } = useForm<FormDataType>({
-    name: '',
-    flow_id: '',
-    input: {},
+  const { data, setData, errors, put, processing } = useForm<FormDataType>({
+    name: project.data.name,
+    input: project.data.input,
   });
-
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    put(route('projects.update', project.data.id));
     e.preventDefault();
-    post(route('projects.store'));
   }
 
   return (
@@ -48,10 +44,10 @@ export default function CreatePage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center">
         <div className="space-y-4 text-center">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            New Project
+            Edit {project.data.name}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Automate boring task effortlessly
+            Update project settings
           </p>
         </div>
 
@@ -63,19 +59,8 @@ export default function CreatePage() {
           <FormField>
             <FormLabel>Flow</FormLabel>
             <FormControl>
-              <FlowSelect
-                value={data.flow_id}
-                onValueChange={(value) => {
-                  setData('flow_id', value);
-                  setSelectedFlow(
-                    flows.data.find(
-                      (flow) => flow.id === Number.parseInt(value),
-                    ),
-                  );
-                }}
-              />
+              <FlowSelect value={project.data.flow_id.toString()} disabled />
             </FormControl>
-            <FormError error={errors.flow_id} />
           </FormField>
 
           <FormField>
@@ -94,7 +79,7 @@ export default function CreatePage() {
           </FormField>
 
           <AnimatePresence>
-            {selectedFlow?.input_schema.map((item) => {
+            {project.data.flow.input_schema.map((item) => {
               if (item.type === 'text_input') {
                 return (
                   <FormField
@@ -161,9 +146,10 @@ export default function CreatePage() {
               }
             })}
           </AnimatePresence>
+
           <div className="flex items-center justify-end pt-3">
             <Button type="submit" disabled={processing}>
-              Create
+              Update
             </Button>
           </div>
         </motion.form>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\FlowResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\RunResource;
@@ -47,5 +48,27 @@ class ProjectController extends Controller
             'project' => new ProjectResource($project->load('flow')),
             'runs' => RunResource::collection($runs),
         ]);
+    }
+
+    public function edit(Project $project): Response|ResponseFactory
+    {
+        $flows = Flow::query()
+            ->where('enabled', true)
+            ->get();
+
+        return inertia('Projects/EditPage', [
+            'project' => new ProjectResource($project->load('flow')),
+            'flows' => FlowResource::collection($flows),
+        ]);
+    }
+
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
+    {
+        $project->update([
+            'name' => $request->string('name'),
+            'input' => $request->input('input'),
+        ]);
+
+        return redirect()->route('projects.show', $project);
     }
 }
