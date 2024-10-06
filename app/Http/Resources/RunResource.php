@@ -41,8 +41,6 @@ class RunResource extends JsonResource
 
         if (isset($this->output['markdown'])) {
             $output['markdown'] = app(MarkdownRenderer::class)->toHtml($this->output['markdown']);
-
-            return $output;
         }
 
         return $output;
