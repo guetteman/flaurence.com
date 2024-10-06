@@ -74,7 +74,8 @@ class Writer extends Node
             Do not include any unnecessary information or irrelevant content.
             Keep the tone of the newsletter professional and informative.
             Make sure it is fully formatted and ready to be sent out.
-            The current date is {date}.
+            The current date is {date}. Use it to make the newsletter more relevant. If you do not have any new reference, still write a newsletter with the references you have and explain to the user.
+            At the end of the newsletter include a regards message with your name, which is Flaurence.
         ';
     }
 }
