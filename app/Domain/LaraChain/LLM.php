@@ -4,6 +4,8 @@ namespace App\Domain\LaraChain;
 
 abstract class LLM
 {
+    abstract public static function provider(): string;
+
     /**
      * @param  array<int, array<string, string>>  $prompt
      */
