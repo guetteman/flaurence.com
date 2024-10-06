@@ -23,6 +23,8 @@ class FirecrawlLoader extends DocumentLoader
         private readonly string $apiKey,
         private readonly string $baseUrl = 'https://api.firecrawl.dev/v1',
         private readonly int $limit = 3,
+        /** @var array<string>|null */
+        private readonly ?array $excludePaths = null,
     ) {}
 
     /**
@@ -39,7 +41,7 @@ class FirecrawlLoader extends DocumentLoader
         /** @var CrawlResponseData $crawlJob */
         $crawlJob = $this->firecrawl->crawl(
             url: $this->url,
-            options: new CrawlOptionsData(limit: $this->limit)
+            options: new CrawlOptionsData(excludePaths: $this->excludePaths, limit: $this->limit)
         )->dto();
 
         if ($crawlJob->error) {

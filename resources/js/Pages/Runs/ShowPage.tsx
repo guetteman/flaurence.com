@@ -25,8 +25,9 @@ export default function ShowPage({ run }: ShowPageProps) {
           </h1>
         </motion.div>
         <Separator className="mt-8" />
-        <div
-          className="prose max-w-7xl pb-32 pt-8"
+        <motion.div
+          variants={slideUpInVariants}
+          className="prose mx-auto max-w-4xl pb-32 pt-8"
           dangerouslySetInnerHTML={{
             __html: run.data.output.markdown as string,
           }}

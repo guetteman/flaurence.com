@@ -9,6 +9,9 @@ class NewsletterState extends State
     /** @var array<string> */
     public array $urls = [];
 
+    /** @var array<string> */
+    public array $excludePaths = [];
+
     public string $topic = '';
 
     /** @var array<array<string, string>> */
@@ -26,5 +29,6 @@ class NewsletterState extends State
     {
         $this->urls = data_get($input, 'urls', []);
         $this->topic = data_get($input, 'topic', '');
+        $this->excludePaths = data_get($input, 'exclude_paths', []);
     }
 }

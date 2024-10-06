@@ -1,13 +1,13 @@
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
 import type { FlowResourceCollection } from '@/types/flows';
 import { usePage } from '@inertiajs/react';
+import { ItemText } from '@radix-ui/react-select';
 
 interface FlowSelectProps {
   value?: string;
@@ -28,16 +28,16 @@ export function FlowSelect({
         <SelectValue placeholder="Select a flow" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          {flows.data.map((flow) => (
-            <SelectItem key={flow.id} value={flow.id.toString()}>
-              <div className="text-bold">{flow.name}</div>
-              <p className="text-xs text-muted-foreground">
-                {flow.short_description}
-              </p>
-            </SelectItem>
-          ))}
-        </SelectGroup>
+        {flows.data.map((flow) => (
+          <SelectItem key={flow.id} value={flow.id.toString()}>
+            <ItemText key={flow.id} className="text-bold block">
+              {flow.name}
+            </ItemText>
+            <p className="text-xs text-muted-foreground">
+              {flow.short_description}
+            </p>
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );

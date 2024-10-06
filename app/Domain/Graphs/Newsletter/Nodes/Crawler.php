@@ -14,6 +14,12 @@ use Saloon\Exceptions\Request\RequestException;
  */
 class Crawler extends Node
 {
+    /**
+     * @param  NewsletterState  $state
+     *
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
     public function execute($state): NewsletterState
     {
         $state->crawledPages = $this->loadUrls($state);
@@ -23,6 +29,9 @@ class Crawler extends Node
 
     /**
      * @return array<array<string, string>>
+     *
+     * @throws FatalRequestException
+     * @throws RequestException
      */
     protected function loadUrls(NewsletterState $state): array
     {
@@ -30,7 +39,7 @@ class Crawler extends Node
         $allDocuments = [];
 
         foreach ($urls as $url) {
-            $document = $this->loadUrl($url);
+            $document = $this->loadUrl($url, $state->excludePaths);
             if ($document !== null) {
                 $allDocuments = array_merge($allDocuments, $document);
             }
@@ -40,17 +49,19 @@ class Crawler extends Node
     }
 
     /**
+     * @param  array<string>  $excludePaths
      * @return array<array<string, string>>|null
      *
      * @throws FatalRequestException
      * @throws RequestException
      */
-    protected function loadUrl(string $url): ?array
+    protected function loadUrl(string $url, array $excludePaths = []): ?array
     {
         $loader = new FirecrawlLoader(
             url: $url,
             apiKey: config()->string('services.firecrawl.api_key'),
             baseUrl: config()->string('services.firecrawl.base_url'),
+            excludePaths: $excludePaths,
         );
         $result = $loader->load();
 
