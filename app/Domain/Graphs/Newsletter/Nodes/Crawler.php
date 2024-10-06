@@ -6,6 +6,8 @@ use App\Domain\FireCrawl\DataObjects\CrawlData;
 use App\Domain\Graphs\Newsletter\NewsletterState;
 use App\Domain\LaraGraph\Node;
 use App\Domain\Tools\DocumentLoaders\FirecrawlLoader;
+use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
 
 /**
  * @extends Node<NewsletterState>
@@ -39,6 +41,9 @@ class Crawler extends Node
 
     /**
      * @return array<array<string, string>>|null
+     *
+     * @throws FatalRequestException
+     * @throws RequestException
      */
     protected function loadUrl(string $url): ?array
     {

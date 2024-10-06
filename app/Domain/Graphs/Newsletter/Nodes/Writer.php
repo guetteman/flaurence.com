@@ -73,7 +73,7 @@ class Writer extends Node
             The newsletter should be concise and to the point, with a focus on the topic.
             Do not include any unnecessary information or irrelevant content.
             Keep the tone of the newsletter professional and informative.
-            Make sure to include any relevant links or citations in the newsletter.
+            Make sure it is fully formatted and ready to be sent out.
             The current date is {date}.
         ';
     }

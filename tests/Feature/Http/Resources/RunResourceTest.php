@@ -25,7 +25,9 @@ describe('RunResource', function () {
             'project_id' => $run->project_id,
             'project' => new ProjectResource($run->project),
             'created_at' => $run->created_at,
-            'created_at_human' => $run->created_at->diffForHumans(),
+            'created_at_for_humans' => $run->created_at->diffForHumans(),
+            'updated_at' => $run->updated_at,
+            'updated_at_for_humans' => $run->updated_at->diffForHumans(),
         ]);
     });
 
@@ -47,7 +49,8 @@ describe('RunResource', function () {
             'project_id' => $run->project_id,
             'project' => new ProjectResource($run->project),
             'created_at' => $run->created_at,
-            'created_at_human' => $run->created_at->diffForHumans(),
+            'created_at_for_humans' => $run->created_at->diffForHumans(),
+            'updated_at_for_humans' => $run->updated_at->diffForHumans(),
         ]);
     });
 });

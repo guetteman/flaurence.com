@@ -54,6 +54,12 @@ class Summarizer extends Node
             Page
             url: {url}
             content: {content}
+
+            The summary structure should be:
+            Url: [The url of the page]
+            Title: [The title of the page]
+            Date: [The date the page was published if available, otherwise set to N/A]
+            Summary: [The summary of the page content with no more than 5000]
         ';
 
         $promptTemplate = PromptTemplate::fromMessages([
@@ -64,7 +70,7 @@ class Summarizer extends Node
         $response = $llm->generate($promptTemplate->formatPrompt([
             'topic' => $topic,
             'url' => $pageData['url'],
-            'content' => $pageData['content'],
+            'content' => strlen($pageData['content']) > 30000 ? substr($pageData['content'], 0, 30000) : $pageData['content'],
         ]));
 
         return [
