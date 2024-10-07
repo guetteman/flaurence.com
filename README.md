@@ -53,6 +53,6 @@ herd composer format && herd composer static-analysis
 
 Debug jobs with xdebug:
 ```shell
-h debug artisan queue:work
+herd debug artisan queue:work
 ```
 
