@@ -35,3 +35,24 @@ This will create an admin user:
 - email: `user@flaurence.test`
 - password: `password`
 
+## Testing
+Run tests:
+```shell
+herd php artisan test --parallel
+```
+
+Run mutation tests:
+```shell
+herd coverage ./vendor/bin/pest --mutate --parallel
+```
+
+Pint and PHPStan:
+```shell
+herd composer format && herd composer static-analysis
+```
+
+Debug jobs with xdebug:
+```shell
+h debug artisan queue:work
+```
+
