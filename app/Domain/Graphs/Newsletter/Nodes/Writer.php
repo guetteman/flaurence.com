@@ -27,7 +27,7 @@ class Writer extends Node
         $references = $this->formatReferences($state);
         $topic = $state->topic;
 
-        $llm = new OpenAILLM(model: 'o1-preview');
+        $llm = new OpenAILLM(id: $state->graphId, model: 'o1-preview');
 
         $systemPrompt = '
         You are a helpful assistant that writes a newsletter for a given topic.

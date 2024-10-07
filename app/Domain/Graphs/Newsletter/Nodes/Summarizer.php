@@ -15,20 +15,19 @@ class Summarizer extends Node
 {
     public function execute($state): NewsletterState
     {
-        $state->summarizedPages = $this->summarizePages($state->crawledPages, $state->topic);
+        $state->summarizedPages = $this->summarizePages($state);
 
         return $state;
     }
 
     /**
-     * @param  array<array<string, string>>  $pages
      * @return array<array<string, string>>
      */
-    protected function summarizePages(array $pages, string $topic): array
+    protected function summarizePages(NewsletterState $state): array
     {
         $summaries = [];
-        foreach ($pages as $pageData) {
-            $summaries[] = $this->summarizePage($topic, $pageData);
+        foreach ($state->crawledPages as $pageData) {
+            $summaries[] = $this->summarizePage($state, $pageData);
         }
 
         return $summaries;
@@ -38,9 +37,9 @@ class Summarizer extends Node
      * @param  array<string, string>  $pageData
      * @return array<string, string>
      */
-    protected function summarizePage(string $topic, array $pageData): array
+    protected function summarizePage(NewsletterState $state, array $pageData): array
     {
-        $llm = new OpenAILLM;
+        $llm = new OpenAILLM(id: $state->graphId);
 
         $systemPrompt = '
         You have been tasked with summarizing the content of a markdown content. Be concise, and share the key points
@@ -68,7 +67,7 @@ class Summarizer extends Node
         ]);
 
         $response = $llm->generate($promptTemplate->formatPrompt([
-            'topic' => $topic,
+            'topic' => $state->topic,
             'url' => $pageData['url'],
             'content' => strlen($pageData['content']) > 30000 ? substr($pageData['content'], 0, 30000) : $pageData['content'],
         ]));

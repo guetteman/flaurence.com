@@ -2,6 +2,8 @@
 
 namespace App\Domain\LaraGraph;
 
+use Str;
+
 /**
  * @template TState of State
  */
@@ -22,9 +24,12 @@ readonly class StateGraphRunner
      * @param  array<string, mixed>  $input
      * @return TState
      */
-    public function invoke(array $input)
+    public function invoke(array $input, ?string $graphId = null)
     {
-        $state = new $this->initialState($input);
+        $state = new $this->initialState(
+            $graphId ?: Str::uuid()->toString(),
+            $input,
+        );
         $currentNode = $this->entryPoint;
 
         while ($currentNode !== $this->endPoint) {

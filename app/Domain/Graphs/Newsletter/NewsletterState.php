@@ -25,8 +25,9 @@ class NewsletterState extends State
     /**
      * @param  array<string, mixed>  $input
      */
-    public function __construct(array $input)
+    public function __construct(string $graphId, array $input)
     {
+        parent::__construct($graphId);
         $this->urls = data_get($input, 'urls', []);
         $this->topic = data_get($input, 'topic', '');
         $this->excludePaths = data_get($input, 'exclude_paths', []);
