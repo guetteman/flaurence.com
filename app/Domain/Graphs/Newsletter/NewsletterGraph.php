@@ -17,7 +17,7 @@ class NewsletterGraph
      *
      * @throws NodeIsNotReachableException
      */
-    public function invoke(array $input): NewsletterState
+    public function invoke(array $input, ?string $id = null): NewsletterState
     {
         $graph = new StateGraph(NewsletterState::class);
 
@@ -32,6 +32,6 @@ class NewsletterGraph
 
         $workflow = $graph->compile();
 
-        return $workflow->invoke($input);
+        return $workflow->invoke($input, $id);
     }
 }
