@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('runs', function (Blueprint $table) {
             $table->id();
             $table->string('status');
+            $table->unsignedInteger('spent_credits')->default(0);
             $table->json('output')->nullable();
             $table->string('error')->nullable();
 

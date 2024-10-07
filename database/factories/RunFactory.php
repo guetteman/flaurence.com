@@ -21,6 +21,7 @@ class RunFactory extends Factory
     {
         return [
             'status' => RunStatusEnum::Queued,
+            'spent_credits' => fake()->numberBetween(0, 10),
             'output' => [],
             'error' => null,
             'project_id' => Project::factory(),

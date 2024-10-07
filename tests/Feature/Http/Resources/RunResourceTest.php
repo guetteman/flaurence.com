@@ -20,6 +20,7 @@ describe('RunResource', function () {
             'id' => $run->id,
             'status' => $run->status,
             'status_label' => $run->status->getLabel(),
+            'spent_credits' => $run->spent_credits,
             'output' => ['markdown' => "<h1 id=\"hello-world\">Hello world</h1>\n"],
             'error' => $run->error,
             'project_id' => $run->project_id,

@@ -23,6 +23,7 @@ class RunResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'status_label' => $this->status->getLabel(),
+            'spent_credits' => $this->spent_credits,
             'output' => $this->formattedOutput(),
             'error' => $this->error,
             'project_id' => $this->project_id,
