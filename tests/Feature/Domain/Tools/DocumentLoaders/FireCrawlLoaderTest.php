@@ -4,16 +4,18 @@ use App\Domain\FireCrawl\DataObjects\GetCrawlStatusResponseData;
 use App\Domain\FireCrawl\Enums\CrawlStatusEnum;
 use App\Domain\FireCrawl\Requests\CrawlRequest;
 use App\Domain\FireCrawl\Requests\GetCrawlStatusRequest;
-use App\Domain\Tools\DocumentLoaders\FirecrawlLoader;
+use App\Domain\Tools\DocumentLoaders\Events\FireCrawlLoaderExecutedEvent;
+use App\Domain\Tools\DocumentLoaders\FireCrawlLoader;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Sleep;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Repositories\Body\JsonBodyRepository;
 
-covers(FirecrawlLoader::class);
+covers(FireCrawlLoader::class);
 
-describe('FirecrawlLoader', function () {
+describe('FireCrawlLoader', function () {
     it('should load documents from a url', function () {
+        Event::fake();
         Sleep::fake();
 
         $mockClient = Saloon::fake([
@@ -53,7 +55,7 @@ describe('FirecrawlLoader', function () {
             ]),
         ]);
 
-        $loader = new FirecrawlLoader(
+        $loader = new FireCrawlLoader(
             url: 'https://test.test',
             apiKey: '1234567890',
         );
@@ -62,6 +64,11 @@ describe('FirecrawlLoader', function () {
         Sleep::assertSlept(fn (CarbonInterval $duration) => $duration->seconds === 3);
         $mockClient->assertSentCount(1, CrawlRequest::class);
         $mockClient->assertSentCount(2, GetCrawlStatusRequest::class);
+
+        Event::assertDispatched(
+            FireCrawlLoaderExecutedEvent::class,
+            fn (FireCrawlLoaderExecutedEvent $event) => $event->totalPagesLoaded === 1 && $event->creditsUsed === 1,
+        );
 
         expect($result)->toBeInstanceOf(GetCrawlStatusResponseData::class);
     });
@@ -76,7 +83,7 @@ describe('FirecrawlLoader', function () {
             ),
         ]);
 
-        $loader = new FirecrawlLoader(
+        $loader = new FireCrawlLoader(
             url: 'https://test.test',
             apiKey: '1234567890',
         );
@@ -118,7 +125,7 @@ describe('FirecrawlLoader', function () {
             ]),
         ]);
 
-        $loader = new FirecrawlLoader(
+        $loader = new FireCrawlLoader(
             url: 'https://test.test',
             apiKey: '1234567890',
         );

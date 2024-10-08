@@ -7,6 +7,7 @@ use App\Domain\FireCrawl\DataObjects\CrawlResponseData;
 use App\Domain\FireCrawl\DataObjects\GetCrawlStatusResponseData;
 use App\Domain\FireCrawl\Enums\CrawlStatusEnum;
 use App\Domain\FireCrawl\FireCrawlConnector;
+use App\Domain\Tools\DocumentLoaders\Events\FireCrawlLoaderExecutedEvent;
 use Illuminate\Support\Sleep;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
@@ -14,7 +15,7 @@ use Saloon\Exceptions\Request\RequestException;
 /**
  * @extends DocumentLoader<GetCrawlStatusResponseData>
  */
-class FirecrawlLoader extends DocumentLoader
+class FireCrawlLoader extends DocumentLoader
 {
     private FireCrawlConnector $firecrawl;
 
@@ -48,7 +49,11 @@ class FirecrawlLoader extends DocumentLoader
             return null;
         }
 
-        return $this->getCrawlResults($crawlJob->id);
+        $response = $this->getCrawlResults($crawlJob->id);
+
+        FireCrawlLoaderExecutedEvent::dispatch($response->total, $response->creditsUsed);
+
+        return $response;
     }
 
     protected function getCrawlResults(string $crawlJobId): GetCrawlStatusResponseData

@@ -5,7 +5,7 @@ namespace App\Domain\Graphs\Newsletter\Nodes;
 use App\Domain\FireCrawl\DataObjects\CrawlData;
 use App\Domain\Graphs\Newsletter\NewsletterState;
 use App\Domain\LaraGraph\Node;
-use App\Domain\Tools\DocumentLoaders\FirecrawlLoader;
+use App\Domain\Tools\DocumentLoaders\FireCrawlLoader;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 
@@ -57,7 +57,7 @@ class Crawler extends Node
      */
     protected function loadUrl(string $url, array $excludePaths = []): ?array
     {
-        $loader = new FirecrawlLoader(
+        $loader = new FireCrawlLoader(
             url: $url,
             apiKey: config()->string('services.firecrawl.api_key'),
             baseUrl: config()->string('services.firecrawl.base_url'),
