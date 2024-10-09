@@ -22,6 +22,7 @@ class FireCrawlLoader extends DocumentLoader
     public function __construct(
         private readonly string $url,
         private readonly string $apiKey,
+        private readonly string $id = '', // @pest-mutate-ignore
         private readonly string $baseUrl = 'https://api.firecrawl.dev/v1',
         private readonly int $limit = 3,
         /** @var array<string>|null */
@@ -51,7 +52,11 @@ class FireCrawlLoader extends DocumentLoader
 
         $response = $this->getCrawlResults($crawlJob->id);
 
-        FireCrawlLoaderExecutedEvent::dispatch($response->total, $response->creditsUsed);
+        FireCrawlLoaderExecutedEvent::dispatch(
+            $this->id,
+            $response->total,
+            $response->creditsUsed,
+        );
 
         return $response;
     }

@@ -9,6 +9,7 @@ class FireCrawlLoaderExecutedEvent
     use Dispatchable;
 
     public function __construct(
+        public string $id,
         public int $totalPagesLoaded,
         public int $creditsUsed,
     ) {}

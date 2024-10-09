@@ -39,7 +39,7 @@ class Crawler extends Node
         $allDocuments = [];
 
         foreach ($urls as $url) {
-            $document = $this->loadUrl($url, $state->excludePaths);
+            $document = $this->loadUrl($url, $state);
             if ($document !== null) {
                 $allDocuments = array_merge($allDocuments, $document);
             }
@@ -49,19 +49,19 @@ class Crawler extends Node
     }
 
     /**
-     * @param  array<string>  $excludePaths
      * @return array<array<string, string>>|null
      *
      * @throws FatalRequestException
      * @throws RequestException
      */
-    protected function loadUrl(string $url, array $excludePaths = []): ?array
+    protected function loadUrl(string $url, NewsletterState $state): ?array
     {
         $loader = new FireCrawlLoader(
             url: $url,
             apiKey: config()->string('services.firecrawl.api_key'),
+            id: $state->graphId,
             baseUrl: config()->string('services.firecrawl.base_url'),
-            excludePaths: $excludePaths,
+            excludePaths: $state->excludePaths,
         );
         $result = $loader->load();
 
