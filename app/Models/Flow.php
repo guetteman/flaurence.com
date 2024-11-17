@@ -26,7 +26,7 @@ class Flow extends Model
     ];
 
     /**
-     * @return HasMany<Project>
+     * @return HasMany<Project, $this>
      */
     public function projects(): HasMany
     {

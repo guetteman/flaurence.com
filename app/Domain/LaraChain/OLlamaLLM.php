@@ -2,10 +2,8 @@
 
 namespace App\Domain\LaraChain;
 
-use App\Domain\LaraChain\Events\LLMExecutedEvent;
 use App\Domain\Llamma\DataObjects\ChatResponseData;
 use App\Domain\Llamma\OLlamaConnector;
-use OpenAI\Laravel\Facades\OpenAI;
 
 class OLlamaLLM extends LLM
 {

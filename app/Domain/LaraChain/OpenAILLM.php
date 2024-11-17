@@ -19,11 +19,14 @@ class OpenAILLM extends LLM
             'messages' => $prompt,
         ]);
 
+        /** @var array<string, int> $usage */
+        $usage = $response->usage->toArray();
+
         LLMExecutedEvent::dispatch(
             $this->id,
             static::provider(),
             $this->model,
-            $response->usage->toArray()
+            $usage,
         );
 
         return $response->choices[0]->message->content;

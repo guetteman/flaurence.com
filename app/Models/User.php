@@ -63,7 +63,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     }
 
     /**
-     * @return HasMany<Project>
+     * @return HasMany<Project, $this>
      */
     public function projects(): HasMany
     {

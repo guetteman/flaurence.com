@@ -3,7 +3,6 @@
 namespace App\Domain\Llamma\Requests;
 
 use App\Domain\Llamma\DataObjects\ChatResponseData;
-use Saloon\Contracts\Body\BodyRepository;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -20,7 +19,7 @@ class ChatRequest extends Request implements HasBody
         protected string $model = 'llama3.2',
         /** @var array<array<string, string>> */
         protected readonly array $messages = [],
-        /** @var array|null */
+        /** @var array<mixed>|null */
         protected readonly ?array $functions = null,
         protected readonly bool $stream = false,
     ) {}

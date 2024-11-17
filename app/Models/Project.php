@@ -24,7 +24,7 @@ class Project extends Model
     ];
 
     /**
-     * @return BelongsTo<Flow, self>
+     * @return BelongsTo<Flow, $this>
      */
     public function flow(): BelongsTo
     {
@@ -32,7 +32,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsTo<User, self>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -40,7 +40,7 @@ class Project extends Model
     }
 
     /**
-     * @return HasMany<Run>
+     * @return HasMany<Run, $this>
      */
     public function runs(): HasMany
     {
