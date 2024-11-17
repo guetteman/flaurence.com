@@ -25,6 +25,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'input' => ['array'],
+            'cron_expression' => ['string', 'min:9', 'max:255'],
         ];
     }
 }

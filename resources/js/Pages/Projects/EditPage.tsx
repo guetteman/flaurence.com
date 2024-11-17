@@ -16,6 +16,7 @@ import type { ProjectResource } from '@/types/projects';
 import { useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { FormEvent } from 'react';
+import { CronInput } from '@/components/ui/cron-input';
 
 interface EditPageProps {
   project: ProjectResource;
@@ -24,6 +25,7 @@ interface EditPageProps {
 interface FormDataType {
   name: string;
   input: Record<string, unknown>;
+  cron_expression: string;
 }
 
 export default function EditPage({ project }: EditPageProps) {
@@ -31,6 +33,7 @@ export default function EditPage({ project }: EditPageProps) {
   const { data, setData, errors, put, processing } = useForm<FormDataType>({
     name: project.data.name,
     input: project.data.input,
+    cron_expression: project.data.cron_expression ?? '0 9 1 * *',
   });
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     put(route('projects.update', project.data.id));
@@ -145,6 +148,16 @@ export default function EditPage({ project }: EditPageProps) {
                 );
               }
             })}
+
+            <div className="space-y-6 border-t border-gray-300 py-4">
+              <h3 className="text-lg font-bold">Schedule</h3>
+              <CronInput
+                value={data.cron_expression}
+                onChange={(expression) =>
+                  setData('cron_expression', expression)
+                }
+              />
+            </div>
           </AnimatePresence>
 
           <div className="flex items-center justify-end pt-3">

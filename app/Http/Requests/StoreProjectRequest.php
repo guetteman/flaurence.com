@@ -26,6 +26,7 @@ class StoreProjectRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'flow_id' => ['required', 'exists:flows,id'],
             'input' => ['array'],
+            'cron_expression' => ['string', 'min:9', 'max:255'],
         ];
     }
 }

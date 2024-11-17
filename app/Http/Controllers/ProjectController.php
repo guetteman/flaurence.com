@@ -35,6 +35,7 @@ class ProjectController extends Controller
             'name' => $request->string('name'),
             'input' => $request->input('input'),
             'enabled' => true,
+            'cron_expression' => $request->string('cron_expression'),
         ]);
 
         return redirect()->route('dashboard');
@@ -67,6 +68,7 @@ class ProjectController extends Controller
         $project->update([
             'name' => $request->string('name'),
             'input' => $request->input('input'),
+            'cron_expression' => $request->string('cron_expression'),
         ]);
 
         return redirect()->route('projects.show', $project);

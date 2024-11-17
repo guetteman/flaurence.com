@@ -16,11 +16,13 @@ import type { FlowResourceCollection, FlowResourceData } from '@/types/flows';
 import { useForm, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { type FormEvent, useState } from 'react';
+import { CronInput } from '@/components/ui/cron-input';
 
 interface FormDataType {
   name: string;
   flow_id: string;
   input: Record<string, unknown>;
+  cron_expression: string;
 }
 
 export default function CreatePage() {
@@ -34,6 +36,7 @@ export default function CreatePage() {
     name: '',
     flow_id: '',
     input: {},
+    cron_expression: '0 9 1 * *',
   });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -160,6 +163,16 @@ export default function CreatePage() {
                 );
               }
             })}
+
+            <div className="space-y-6 border-t border-gray-300 py-4">
+              <h3 className="text-lg font-bold">Schedule</h3>
+              <CronInput
+                value={data.cron_expression}
+                onChange={(expression) =>
+                  setData('cron_expression', expression)
+                }
+              />
+            </div>
           </AnimatePresence>
           <div className="flex items-center justify-end pt-3">
             <Button type="submit" disabled={processing}>
