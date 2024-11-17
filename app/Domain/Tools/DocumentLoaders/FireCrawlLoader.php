@@ -43,7 +43,12 @@ class FireCrawlLoader extends DocumentLoader
         /** @var CrawlResponseData $crawlJob */
         $crawlJob = $this->firecrawl->crawl(
             url: $this->url,
-            options: new CrawlOptionsData(excludePaths: $this->excludePaths, limit: $this->limit)
+            options: new CrawlOptionsData(
+                excludePaths: $this->excludePaths,
+                limit: $this->limit,
+                scraperFormats: ['html', 'markdown'],
+                scraperExcludeTags: ['script', 'style', 'head'],
+            )
         )->dto();
 
         if ($crawlJob->error) {

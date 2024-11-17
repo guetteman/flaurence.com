@@ -3,8 +3,10 @@
 namespace App\Domain\FireCrawl;
 
 use App\Domain\FireCrawl\DataObjects\CrawlOptionsData;
+use App\Domain\FireCrawl\DataObjects\ScrapeOptionsData;
 use App\Domain\FireCrawl\Requests\CrawlRequest;
 use App\Domain\FireCrawl\Requests\GetCrawlStatusRequest;
+use App\Domain\FireCrawl\Requests\ScrapeRequest;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Auth\TokenAuthenticator;
@@ -20,6 +22,15 @@ class FireCrawlConnector extends Connector
         public readonly string $baseUrl,
         public readonly string $token,
     ) {}
+
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
+    public function scrape(string $url, ?ScrapeOptionsData $options = null): Response
+    {
+        return $this->send(new ScrapeRequest($url, $options));
+    }
 
     /**
      * @throws FatalRequestException

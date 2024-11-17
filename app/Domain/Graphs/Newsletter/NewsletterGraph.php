@@ -2,8 +2,8 @@
 
 namespace App\Domain\Graphs\Newsletter;
 
-use App\Domain\Graphs\Newsletter\Nodes\Crawler;
-use App\Domain\Graphs\Newsletter\Nodes\Summarizer;
+use App\Domain\Graphs\Newsletter\Nodes\ArticleExtractor;
+use App\Domain\Graphs\Newsletter\Nodes\Scraper;
 use App\Domain\Graphs\Newsletter\Nodes\Writer;
 use App\Domain\LaraGraph\Exceptions\NodeIsNotReachableException;
 use App\Domain\LaraGraph\StateGraph;
@@ -22,8 +22,8 @@ class NewsletterGraph
         $graph = new StateGraph(NewsletterState::class);
 
         $graph
-            ->addNode('Crawl Urls', new Crawler)
-            ->addNode('Summarize Pages', new Summarizer)
+            ->addNode('Crawl Urls', new Scraper)
+            ->addNode('Summarize Pages', new ArticleExtractor)
             ->addNode('Write Newsletter', new Writer)
             ->addEdge(StateGraph::START, 'Crawl Urls')
             ->addEdge('Crawl Urls', 'Summarize Pages')

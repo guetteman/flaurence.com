@@ -2,6 +2,7 @@
 
 namespace App\Domain\FireCrawl\Requests;
 
+use App\Domain\FireCrawl\DataObjects\ScrapeOptionsData;
 use App\Domain\FireCrawl\DataObjects\ScrapeResponseData;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -17,7 +18,10 @@ class ScrapeRequest extends Request implements HasBody
 
     public function __construct(
         public string $url,
-    ) {}
+        protected ?ScrapeOptionsData $options = null,
+    ) {
+        $this->options = $this->options ?? new ScrapeOptionsData;
+    }
 
     public function resolveEndpoint(): string
     {
@@ -26,7 +30,7 @@ class ScrapeRequest extends Request implements HasBody
 
     public function createDtoFromResponse(Response $response): ScrapeResponseData
     {
-        return ScrapeResponseData::from($response->json());
+        return ScrapeResponseData::from($response->json()['data']);
     }
 
     /**
@@ -36,7 +40,11 @@ class ScrapeRequest extends Request implements HasBody
     {
         return [
             'url' => $this->url,
-            'formats' => ['markdown', 'html'],
+            'formats' => $this->options->formats,
+            'onlyMainContent' => $this->options->onlyMainContent,
+            'includeTags' => $this->options->includeTags,
+            'excludeTags' => $this->options->excludeTags,
+            'waitFor' => $this->options->waitFor,
         ];
     }
 }

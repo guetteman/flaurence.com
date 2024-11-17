@@ -73,7 +73,7 @@ class Crawler extends Node
         return collect($result->data)->map(function (CrawlData $data) {
             return [
                 'url' => $data->metadata->sourceURL,
-                'content' => $data->markdown,
+                'content' => $data->html,
             ];
         })->all();
     }
