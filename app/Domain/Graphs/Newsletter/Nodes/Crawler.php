@@ -61,6 +61,7 @@ class Crawler extends Node
             apiKey: config()->string('services.firecrawl.api_key'),
             id: $state->graphId,
             baseUrl: config()->string('services.firecrawl.base_url'),
+            limit: 1,
             excludePaths: $state->excludePaths,
         );
         $result = $loader->load();
