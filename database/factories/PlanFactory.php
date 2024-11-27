@@ -24,8 +24,8 @@ class PlanFactory extends Factory
             'type' => $this->faker->randomElement([PlanTypeEnum::Monthly, PlanTypeEnum::Yearly]),
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'price' => $this->faker->randomFloat(2, 0, 100),
-            'active' => $this->faker->boolean(),
+            'price' => $this->faker->randomNumber(4),
+            'active' => true,
         ];
     }
 }
