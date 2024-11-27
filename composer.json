@@ -12,6 +12,7 @@
         "laravel/framework": "^11.9",
         "laravel/horizon": "^5.29",
         "laravel/tinker": "^2.9",
+        "lemonsqueezy/laravel": "^1.7",
         "openai-php/laravel": "^0.10.1",
         "saloonphp/laravel-plugin": "^3.0",
         "saloonphp/saloon": "^3.0",
