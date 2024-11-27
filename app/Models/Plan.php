@@ -16,4 +16,6 @@ class Plan extends Model
         'active' => 'boolean',
         'type' => PlanTypeEnum::class,
     ];
+
+    protected $guarded = [];
 }
