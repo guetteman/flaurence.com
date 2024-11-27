@@ -7,6 +7,7 @@
         @routes
         @vite('resources/js/app.tsx')
         @inertiaHead
+        @lemonJS
     </head>
     <body>
         @inertia

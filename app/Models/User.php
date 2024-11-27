@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use LemonSqueezy\Laravel\Billable;
 
 /**
  * @mixin IdeHelperUser
@@ -22,6 +23,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     use Notifiable;
     use SoftDeletes;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
