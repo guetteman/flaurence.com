@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { PlanResourceCollection } from '@/types/plans';
+import { motion } from 'framer-motion';
+import { useAnimationVariants } from '@/hooks/use-animation-variants';
 
 const frequencies = [
   { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
@@ -14,14 +16,20 @@ interface PlansProps {
 
 export function Plans({ plans }: PlansProps) {
   const [frequency, setFrequency] = useState(frequencies[0]);
+  const { slideUpInVariants } = useAnimationVariants();
 
   const tiers = useMemo(() => {
     return plans.data.filter((plan) => plan.type === frequency.value);
   }, [plans, frequency]);
 
   return (
-    <div>
+    <motion.div variants={slideUpInVariants}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto mt-16 max-w-4xl text-center">
+          <h2 className="text-4xl font-semibold">
+            Select a plan that works for you
+          </h2>
+        </div>
         <div className="mt-16 flex justify-center">
           <fieldset aria-label="Payment frequency">
             <div className="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs/5 font-semibold ring-1 ring-inset ring-gray-200">
@@ -77,7 +85,6 @@ export function Plans({ plans }: PlansProps) {
               </p>
               <a
                 href={route('billing.subscribe', plan.external_variant_id)}
-                aria-describedby={plan.id}
                 className={cn(
                   index === 1
                     ? 'bg-black text-white shadow-sm hover:bg-gray-800'
@@ -91,6 +98,6 @@ export function Plans({ plans }: PlansProps) {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
