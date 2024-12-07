@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RunController;
@@ -23,5 +24,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(RunController::class)->group(function () {
         Route::post('/projects/{project}/runs', 'store')->name('runs.store');
         Route::get('/projects/{project}/runs/{run}', 'show')->name('runs.show');
+    });
+
+    Route::controller(BillingController::class)->group(function () {
+        Route::get('/billing', 'index')->name('billing.index');
+        Route::get('/subscribe/{variant_id}', 'subscribe')->name('billing.subscribe');
     });
 });
