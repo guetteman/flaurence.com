@@ -28,6 +28,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(BillingController::class)->group(function () {
         Route::get('/billing', 'index')->name('billing.index');
-        Route::get('/subscribe/{variant_id}', 'subscribe')->name('billing.subscribe');
+        Route::get('/subscribe/{variant_id}', 'store')->name('billing.subscribe');
     });
 });

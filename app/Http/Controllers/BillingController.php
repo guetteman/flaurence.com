@@ -19,7 +19,7 @@ class BillingController extends Controller
         ]);
     }
 
-    public function subscribe(Request $request, string $variant_id): Checkout
+    public function store(Request $request, string $variant_id): Checkout
     {
         return $request->user()->subscribe(
             variant: $variant_id,

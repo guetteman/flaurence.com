@@ -19,4 +19,22 @@ describe('Plan model', function () {
 
         expect($plan->active)->toBeTrue();
     });
+
+    it('should return formatted price', function () {
+        $plan = Plan::factory()->create([
+            'price' => 499,
+        ]);
+
+        expect($plan->formatted_price)->toBe('4.99');
+    });
+
+    it('should filter active plans', function () {
+        Plan::factory()->create([
+            'active' => 1,
+        ]);
+
+        $activePlans = Plan::active()->get();
+
+        expect($activePlans)->toHaveCount(1);
+    });
 });

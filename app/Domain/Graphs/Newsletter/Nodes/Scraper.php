@@ -40,8 +40,6 @@ class Scraper extends Node
             }
         }
 
-        dump($allDocuments);
-
         return $allDocuments;
     }
 
@@ -68,7 +66,6 @@ class Scraper extends Node
                 'content' => $result->html,
             ];
         } catch (Throwable $e) {
-            dump($e);
             return null;
         }
     }

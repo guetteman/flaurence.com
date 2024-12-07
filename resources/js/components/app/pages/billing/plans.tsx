@@ -77,7 +77,7 @@ export function Plans({ plans }: PlansProps) {
               <p className="mt-4 text-sm/6 text-gray-600">{plan.description}</p>
               <p className="mt-6 flex items-baseline gap-x-1">
                 <span className="text-4xl font-semibold tracking-tight text-gray-900">
-                  {plan.formatted_price}
+                  {plan.formatted_price}$
                 </span>
                 <span className="text-sm/6 font-semibold text-gray-600">
                   {frequency.priceSuffix}
