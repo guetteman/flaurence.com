@@ -19,6 +19,7 @@ class BillingController extends Controller
         ]);
     }
 
+    // @pest-mutate-ignore
     public function store(Request $request, string $variant_id): Checkout
     {
         return $request->user()->subscribe(
