@@ -7,19 +7,24 @@ use App\Http\Resources\SubscriptionResource;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Inertia\Response;
+use Inertia\ResponseFactory;
 use LemonSqueezy\Laravel\Checkout;
+use LemonSqueezy\Laravel\Subscription;
 
 class BillingController extends Controller
 {
-    public function index(): Response
+    public function index(): Response|ResponseFactory
     {
+        /** @var Subscription $activeSubscription */
+        $activeSubscription = auth()->user()->subscriptions()->latest()->first();
+
         return inertia('Settings/BillingPage', [
             'plans' => PlanResource::collection(
                 Plan::query()->active()->get()
             ),
             'activePlan' => PlanResource::make(
                 Plan::query()
-                    ->where('external_variant_id', auth()->user()->subscriptions()->first()->variant_id)
+                    ->where('external_variant_id', $activeSubscription->variant_id) // @phpstan-ignore-line
                     ->first()
             ),
             'activeSubscription' => SubscriptionResource::make(

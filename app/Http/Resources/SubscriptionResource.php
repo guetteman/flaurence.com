@@ -9,6 +9,17 @@ use LemonSqueezy\Laravel\Subscription;
 
 /**
  * @mixin Subscription
+ *
+ * @property string $status
+ * @property string $variant_id
+ * @property string $card_brand
+ * @property string $card_last_four
+ * @property string $pause_mode
+ * @property string $pause_resumes_at
+ * @property string $trial_ends_at
+ * @property string $renews_at
+ * @property string $ends_at
+ * @property string $created_at
  */
 class SubscriptionResource extends JsonResource
 {

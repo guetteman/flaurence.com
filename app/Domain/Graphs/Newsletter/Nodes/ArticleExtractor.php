@@ -8,6 +8,9 @@ use App\Domain\LaraChain\OpenAILLM;
 use App\Domain\LaraChain\PromptTemplate;
 use App\Domain\LaraGraph\Node;
 
+/**
+ * @extends Node<NewsletterState>
+ */
 class ArticleExtractor extends Node
 {
     /**
@@ -20,6 +23,9 @@ class ArticleExtractor extends Node
         return $state;
     }
 
+    /**
+     * @return array<array<string, string>>
+     */
     protected function extractPagesData(NewsletterState $state): array
     {
         $pagesData = [];
@@ -30,6 +36,10 @@ class ArticleExtractor extends Node
         return $pagesData;
     }
 
+    /**
+     * @param  array<string, string>  $pageData
+     * @return array<string, string>
+     */
     protected function extractPageData(NewsletterState $state, array $pageData): array
     {
         $llm = new OpenAILLM(id: $state->graphId, model: 'gpt-4o');
