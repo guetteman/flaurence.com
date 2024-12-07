@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PlanResource;
+use App\Http\Resources\SubscriptionResource;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -15,6 +16,14 @@ class BillingController extends Controller
         return inertia('Settings/BillingPage', [
             'plans' => PlanResource::collection(
                 Plan::query()->active()->get()
+            ),
+            'activePlan' => PlanResource::make(
+                Plan::query()
+                    ->where('external_variant_id', auth()->user()->subscriptions()->first()->variant_id)
+                    ->first()
+            ),
+            'activeSubscription' => SubscriptionResource::make(
+                auth()->user()->subscriptions()->latest()->first()
             ),
         ]);
     }

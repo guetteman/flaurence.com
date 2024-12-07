@@ -5,12 +5,15 @@ import { Separator } from '@/components/ui/separator';
 import { useAnimationVariants } from '@/hooks/use-animation-variants';
 import type { PlanResourceCollection } from '@/types/plans';
 import { Plans } from '@/components/app/pages/billing/plans';
+import type { UserResource } from '@/types/user';
+import { ActiveSubscription } from '@/components/app/pages/billing/active-subscription';
 
 interface BillingPageProps {
   plans: PlanResourceCollection;
+  user: UserResource;
 }
 
-export default function BillingPage({ plans }: BillingPageProps) {
+export default function BillingPage({ plans, user }: BillingPageProps) {
   const { slideUpInVariants } = useAnimationVariants();
 
   return (
@@ -21,7 +24,13 @@ export default function BillingPage({ plans }: BillingPageProps) {
           <h1 className="text-2xl font-bold">Billing</h1>
         </motion.div>
         <Separator className="mt-8" />
-        <Plans plans={plans} />
+        {!user.data.subscribed ? (
+          <Plans plans={plans} />
+        ) : (
+          <div className="mx-auto mt-8 w-full max-w-4xl">
+            <ActiveSubscription />
+          </div>
+        )}
       </div>
     </AnimatedContainer>
   );

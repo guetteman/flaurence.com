@@ -18,12 +18,12 @@ use LemonSqueezy\Laravel\Billable;
  */
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
+    use Billable;
+
     /** @use HasFactory<Factory<static>> */
     use HasFactory;
-
     use Notifiable;
     use SoftDeletes;
-    use Billable;
 
     /**
      * The attributes that are mass assignable.

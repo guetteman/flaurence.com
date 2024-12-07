@@ -47,7 +47,7 @@ class DevelopmentSeeder extends Seeder
             'external_product_id' => '402916',
             'external_variant_id' => '613778',
             'name' => 'Pro',
-            'description' => 'Yearly subscription',
+            'description' => 'Monthly subscription',
             'type' => PlanTypeEnum::Monthly,
             'price' => 1499,
         ]);
