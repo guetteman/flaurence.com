@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Flow;
 use App\Models\Project;
 use App\Models\Run;
 use App\Models\User;
@@ -8,12 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 describe('Project model', function () {
-    it('should cast input to ArrayObject', function () {
+    it('should cast urls to Array', function () {
         $project = Project::factory()->create([
-            'input' => ['foo' => 'bar'],
+            'urls' => ['foo' => 'bar'],
         ]);
 
-        expect($project->input)->toBeArray();
+        expect($project->urls)->toBeArray();
     });
 
     it('should cast enabled column to boolean', function () {
@@ -22,13 +21,6 @@ describe('Project model', function () {
         ]);
 
         expect($project->enabled)->toBeTrue();
-    });
-
-    it('should return a BelongsTo relationship with Flow', function () {
-        $project = Project::factory()->create();
-
-        expect($project->flow())->toBeInstanceOf(BelongsTo::class)
-            ->and($project->flow()->getRelated())->toBeInstanceOf(Flow::class);
     });
 
     it('should return a BelongsTo relationship with User', function () {

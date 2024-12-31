@@ -21,12 +21,13 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'input' => $this->input,
+            'topic' => $this->topic,
+            'description' => $this->description,
+            'urls' => $this->urls,
             'cron_expression' => $this->cron_expression,
             'timezone' => $this->timezone,
+            'enabled' => $this->enabled,
             'user_id' => $this->user_id,
-            'flow_id' => $this->flow_id,
-            'flow' => new FlowResource($this->whenLoaded('flow')),
         ];
     }
 }

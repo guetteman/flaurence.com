@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Http\Resources\FlowResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\RunResource;
-use App\Models\Flow;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
@@ -17,23 +15,17 @@ class ProjectController extends Controller
 {
     public function create(): Response|ResponseFactory
     {
-        $flows = Flow::query()
-            ->where('enabled', true)
-            ->get();
-
-        return inertia('Projects/CreatePage', [
-            'flows' => FlowResource::collection($flows),
-        ]);
+        return inertia('Projects/CreatePage');
     }
 
     public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $flow = Flow::query()->findOrFail($request->integer('flow_id'));
-
-        $flow->projects()->create([
+        Project::create([
             'user_id' => auth()->id(),
             'name' => $request->string('name'),
-            'input' => $request->input('input'),
+            'topic' => $request->string('topic'),
+            'description' => $request->string('description'),
+            'urls' => $request->input('urls'),
             'enabled' => true,
             'cron_expression' => $request->string('cron_expression'),
         ]);
@@ -46,20 +38,15 @@ class ProjectController extends Controller
         $runs = $project->runs()->latest()->get();
 
         return inertia('Projects/ShowPage', [
-            'project' => new ProjectResource($project->load('flow')),
+            'project' => new ProjectResource($project),
             'runs' => RunResource::collection($runs),
         ]);
     }
 
     public function edit(Project $project): Response|ResponseFactory
     {
-        $flows = Flow::query()
-            ->where('enabled', true)
-            ->get();
-
         return inertia('Projects/EditPage', [
-            'project' => new ProjectResource($project->load('flow')),
-            'flows' => FlowResource::collection($flows),
+            'project' => new ProjectResource($project),
         ]);
     }
 
@@ -67,7 +54,9 @@ class ProjectController extends Controller
     {
         $project->update([
             'name' => $request->string('name'),
-            'input' => $request->input('input'),
+            'topic' => $request->string('topic'),
+            'description' => $request->string('description'),
+            'urls' => $request->input('urls'),
             'cron_expression' => $request->string('cron_expression'),
         ]);
 

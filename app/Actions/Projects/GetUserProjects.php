@@ -15,7 +15,6 @@ class GetUserProjects
     {
         return $user
             ->projects()
-            ->with('flow')
             ->get();
     }
 }

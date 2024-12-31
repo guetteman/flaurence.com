@@ -15,21 +15,19 @@ class BillingController extends Controller
 {
     public function index(): Response|ResponseFactory
     {
-        /** @var Subscription $activeSubscription */
+        /** @var Subscription|null $activeSubscription */
         $activeSubscription = auth()->user()->subscriptions()->latest()->first();
+        $activePlan = null;
+        if ($activeSubscription) {
+            $activePlan = Plan::query()
+                ->where('external_variant_id', $activeSubscription->variant_id) // @phpstan-ignore-line
+                ->first();
+        }
 
         return inertia('Settings/BillingPage', [
-            'plans' => PlanResource::collection(
-                Plan::query()->active()->get()
-            ),
-            'activePlan' => PlanResource::make(
-                Plan::query()
-                    ->where('external_variant_id', $activeSubscription->variant_id) // @phpstan-ignore-line
-                    ->first()
-            ),
-            'activeSubscription' => SubscriptionResource::make(
-                auth()->user()->subscriptions()->latest()->first()
-            ),
+            'plans' => PlanResource::collection(Plan::query()->active()->get()),
+            'activePlan' => $activePlan ? new PlanResource($activePlan) : null,
+            'activeSubscription' => $activeSubscription ? new SubscriptionResource($activeSubscription) : null,
         ]);
     }
 

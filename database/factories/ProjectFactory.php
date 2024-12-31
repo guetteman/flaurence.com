@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Flow;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,11 +21,12 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->sentence,
             'enabled' => true,
-            'input' => [],
+            'topic' => $this->faker->sentence,
+            'description' => $this->faker->sentence,
+            'urls' => [],
             'cron_expression' => '0 0 * * *',
             'timezone' => 'UTC',
             'user_id' => User::factory(),
-            'flow_id' => Flow::factory(),
         ];
     }
 }

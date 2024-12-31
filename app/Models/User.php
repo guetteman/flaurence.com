@@ -22,6 +22,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     /** @use HasFactory<Factory<static>> */
     use HasFactory;
+
     use Notifiable;
     use SoftDeletes;
 

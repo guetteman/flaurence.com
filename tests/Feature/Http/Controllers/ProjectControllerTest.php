@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProjectController;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\Flow;
 use App\Models\Project;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
@@ -11,20 +10,6 @@ use Inertia\Testing\AssertableInertia;
 covers(ProjectController::class, StoreProjectRequest::class, UpdateProjectRequest::class);
 
 describe('ProjectController create', function () {
-    it('should provide active flows', function () {
-        Flow::factory()->count(3)->enabled()->create();
-        Flow::factory()->count(2)->disabled()->create();
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('projects.create'))
-            ->assertInertia(
-                fn (AssertableInertia $page) => $page
-                    ->component('Projects/CreatePage')
-                    ->has('flows.data', 3)
-            );
-    });
-
     it('redirects to login if user is not authenticated', function () {
         $response = $this->get(route('projects.create'));
 
@@ -34,25 +19,27 @@ describe('ProjectController create', function () {
 
 describe('ProjectController store', function () {
     it('should create projects enabled by default', function () {
-        $flow = Flow::factory()->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => $flow->id,
                 'name' => 'My project',
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
             ->assertRedirect(route('dashboard'));
 
-        $this->assertDatabaseHas('projects', [
-            'flow_id' => $flow->id,
-            'name' => 'My project',
-        ]);
+        $project = $user->projects()->first();
 
-        $project = $flow->projects()->first();
-        expect($project->input)->toBe(['foo' => 'bar'])
-            ->and($project->enabled)->toBeTrue();
+        expect($project)
+            ->name->toBe('My project')
+            ->topic->toBe('My topic')
+            ->description->toBe('My description')
+            ->urls->toBe(['https://example.com'])
+            ->cron_expression->toBe('0 0 * * *')
+            ->enabled->toBeTrue();
     });
 
     it('should redirect to login if user is not authenticated', function () {
@@ -62,77 +49,195 @@ describe('ProjectController store', function () {
     });
 
     it('validates name is required', function () {
-        $flow = Flow::factory()->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => $flow->id,
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field is required.']);
     });
 
     it('validates name is a string', function () {
-        $flow = Flow::factory()->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => $flow->id,
                 'name' => 123,
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field must be a string.']);
     });
 
     it('validates name is not greater than 255 characters', function () {
-        $flow = Flow::factory()->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => $flow->id,
                 'name' => str_repeat('a', 256),
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field must not be greater than 255 characters.']);
     });
 
-    it('validates flow_id is required', function () {
+    it('validates topic is required', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
                 'name' => 'My project',
-                'input' => ['foo' => 'bar'],
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('flow_id');
+            ->assertSessionHasErrors(['topic' => 'The topic field is required.']);
     });
 
-    it('validates flow_id exists', function () {
+    it('validates topic is a string', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => 999,
                 'name' => 'My project',
-                'input' => ['foo' => 'bar'],
+                'topic' => 123,
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('flow_id');
+            ->assertSessionHasErrors(['topic' => 'The topic field must be a string.']);
     });
 
-    it('validates input is an array', function () {
-        $flow = Flow::factory()->create();
+    it('validates topic is not greater than 255 characters', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('projects.store'), [
-                'flow_id' => $flow->id,
                 'name' => 'My project',
-                'input' => 'not-an-array',
+                'topic' => str_repeat('a', 256),
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('input');
+            ->assertSessionHasErrors(['topic' => 'The topic field must not be greater than 255 characters.']);
+    });
+
+    it('validates description is a string', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 123,
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['description' => 'The description field must be a string.']);
+    });
+
+    it('validates description is not greater than 500 characters', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => str_repeat('a', 501),
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['description' => 'The description field must not be greater than 500 characters.']);
+    });
+
+    it('validates urls is required', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field is required.']);
+    });
+
+    it('validates urls is an array', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => 'not-an-array',
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field must be an array.']);
+    });
+
+    it('validates urls has at least one item', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => [],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field is required.']);
+    });
+
+    it('validates cron_expression is required', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+            ])
+            ->assertSessionHasErrors(['cron_expression' => 'The cron expression field is required.']);
+    });
+
+    it('validates cron_expression is a string', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => 123,
+            ])
+            ->assertSessionHasErrors(['cron_expression' => 'The cron expression field must be a string.']);
+    });
+
+    it('validates cron_expression is not shorter than 9 characters', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * *',
+            ])
+            ->assertSessionHasErrors(['cron_expression' => 'The cron expression field must be at least 9 characters.']);
     });
 });
 
@@ -140,8 +245,7 @@ describe('ProjectController show', function () {
     it('should show a project', function () {
         $project = Project::factory()
             ->hasRuns(3)
-            ->create()
-            ->load('flow');
+            ->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
@@ -153,19 +257,13 @@ describe('ProjectController show', function () {
                     ->has('project.data', fn (AssertableInertia $page) => $page
                         ->where('id', $project->id)
                         ->where('name', $project->name)
-                        ->where('input', $project->input)
+                        ->where('topic', $project->topic)
+                        ->where('description', $project->description)
+                        ->where('urls', $project->urls)
                         ->where('cron_expression', $project->cron_expression)
                         ->where('timezone', $project->timezone)
+                        ->where('enabled', $project->enabled)
                         ->where('user_id', $project->user_id)
-                        ->where('flow_id', $project->flow_id)
-                        ->has('flow', fn (AssertableInertia $page) => $page
-                            ->where('id', $project->flow->id)
-                            ->where('name', $project->flow->name)
-                            ->where('short_description', $project->flow->short_description)
-                            ->where('description', $project->flow->description)
-                            ->where('version', $project->flow->version)
-                            ->where('input_schema', $project->flow->input_schema)
-                        )
                     )
             );
     });
@@ -190,36 +288,14 @@ describe('ProjectController edit', function () {
                     ->has('project.data', fn (AssertableInertia $page) => $page
                         ->where('id', $project->id)
                         ->where('name', $project->name)
-                        ->where('input', $project->input)
+                        ->where('topic', $project->topic)
+                        ->where('description', $project->description)
+                        ->where('urls', $project->urls)
                         ->where('cron_expression', $project->cron_expression)
                         ->where('timezone', $project->timezone)
+                        ->where('enabled', $project->enabled)
                         ->where('user_id', $project->user_id)
-                        ->where('flow_id', $project->flow_id)
-                        ->has('flow', fn (AssertableInertia $page) => $page
-                            ->where('id', $project->flow->id)
-                            ->where('name', $project->flow->name)
-                            ->where('short_description', $project->flow->short_description)
-                            ->where('description', $project->flow->description)
-                            ->where('version', $project->flow->version)
-                            ->where('input_schema', $project->flow->input_schema)
-                        )
                     )
-            );
-    });
-
-    it('should provide active flows', function () {
-        $enabledFlows = Flow::factory()->count(3)->enabled()->create();
-        Flow::factory()->count(2)->disabled()->create();
-        $project = Project::factory()
-            ->for($enabledFlows->first())
-            ->create();
-
-        $this->actingAs($project->user)
-            ->get(route('projects.edit', $project))
-            ->assertInertia(
-                fn (AssertableInertia $page) => $page
-                    ->component('Projects/EditPage')
-                    ->has('flows.data', 3)
             );
     });
 
@@ -236,19 +312,28 @@ describe('ProjectController update', function () {
     it('should update project', function () {
         $project = Project::factory()->create([
             'name' => 'My project',
-            'input' => ['hello' => 'world'],
+            'topic' => 'My topic',
+            'description' => 'My description',
+            'urls' => ['https://example.com'],
+            'cron_expression' => '0 0 * * *',
         ]);
 
         $this->actingAs($project->user)
             ->put(route('projects.update', $project), [
                 'name' => 'Updated project',
-                'input' => ['foo' => 'bar'],
+                'topic' => 'Updated topic',
+                'description' => 'Updated description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
             ->assertRedirect(route('projects.show', $project));
 
         $project->refresh();
         expect($project->name)->toBe('Updated project')
-            ->and($project->input)->toBe(['foo' => 'bar']);
+            ->and($project->topic)->toBe('Updated topic')
+            ->and($project->description)->toBe('Updated description')
+            ->and($project->urls)->toBe(['https://example.com'])
+            ->and($project->cron_expression)->toBe('0 0 * * *');
     });
 
     it('validates name is required', function () {
@@ -256,9 +341,12 @@ describe('ProjectController update', function () {
 
         $this->actingAs($project->user)
             ->put(route('projects.update', $project), [
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field is required.']);
     });
 
     it('validates name is a string', function () {
@@ -267,9 +355,12 @@ describe('ProjectController update', function () {
         $this->actingAs($project->user)
             ->put(route('projects.update', $project), [
                 'name' => 123,
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field must be a string.']);
     });
 
     it('validates name is not greater than 255 characters', function () {
@@ -278,20 +369,109 @@ describe('ProjectController update', function () {
         $this->actingAs($project->user)
             ->put(route('projects.update', $project), [
                 'name' => str_repeat('a', 256),
-                'input' => ['foo' => 'bar'],
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'The name field must not be greater than 255 characters.']);
     });
 
-    it('validates input is an array', function () {
+    it('validates topic is required', function () {
         $project = Project::factory()->create();
 
         $this->actingAs($project->user)
             ->put(route('projects.update', $project), [
                 'name' => 'My project',
-                'input' => 'not-an-array',
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors('input');
+            ->assertSessionHasErrors(['topic' => 'The topic field is required.']);
+    });
+
+    it('validates topic is a string', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => 123,
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['topic' => 'The topic field must be a string.']);
+    });
+
+    it('validates topic is not greater than 255 characters', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => str_repeat('a', 256),
+                'description' => 'My description',
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['topic' => 'The topic field must not be greater than 255 characters.']);
+    });
+
+    it('validates description is a string', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 123,
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['description' => 'The description field must be a string.']);
+    });
+
+    it('validates description is not greater than 500 characters', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => str_repeat('a', 501),
+                'urls' => ['https://example.com'],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['description' => 'The description field must not be greater than 500 characters.']);
+    });
+
+    it('validates urls is an array', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => 'not-an-array',
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field must be an array.']);
+    });
+
+    it('validates urls has at least one item', function () {
+        $project = Project::factory()->create();
+
+        $this->actingAs($project->user)
+            ->put(route('projects.update', $project), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => [],
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field is required.']);
     });
 
     it('redirects to login if user is not authenticated', function () {

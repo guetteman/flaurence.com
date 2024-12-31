@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('input');
+            $table->string('topic');
+            $table->text('description')->nullable();
+            $table->json('urls');
             $table->boolean('enabled')->default(false);
             $table->string('cron_expression')->nullable();
             $table->string('timezone')->nullable();
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('flow_id')->constrained()->noActionOnDelete();
 
             $table->timestamps();
             $table->softDeletes();

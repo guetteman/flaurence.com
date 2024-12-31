@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,16 +19,8 @@ class Project extends Model
 
     protected $casts = [
         'enabled' => 'boolean',
-        'input' => 'array',
+        'urls' => 'array',
     ];
-
-    /**
-     * @return BelongsTo<Flow, $this>
-     */
-    public function flow(): BelongsTo
-    {
-        return $this->belongsTo(Flow::class);
-    }
 
     /**
      * @return BelongsTo<User, $this>
