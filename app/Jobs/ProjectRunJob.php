@@ -29,7 +29,7 @@ class ProjectRunJob implements ShouldQueue
         ]);
 
         try {
-            $graph = app($this->run->project->flow->external_id);
+            $graph = app(NewsletterGraph::class);
             $state = $graph->invoke(
                 input: $this->run->project->input,
                 id: $this->run->id,

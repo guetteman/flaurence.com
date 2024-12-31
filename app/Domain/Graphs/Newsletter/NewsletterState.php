@@ -14,6 +14,8 @@ class NewsletterState extends State
 
     public string $topic = '';
 
+    public string $description = '';
+
     /** @var array<array<string, string>> */
     public array $crawledPages = [];
 
@@ -30,6 +32,7 @@ class NewsletterState extends State
         parent::__construct($graphId);
         $this->urls = data_get($input, 'urls', []);
         $this->topic = data_get($input, 'topic', '');
+        $this->description = data_get($input, 'description', '');
         $this->excludePaths = data_get($input, 'exclude_paths', []);
     }
 }

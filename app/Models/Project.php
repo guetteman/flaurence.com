@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @mixin IdeHelperProject
+ */
 class Project extends Model
 {
     /** @use HasFactory<Factory<static>> */
@@ -21,6 +25,17 @@ class Project extends Model
         'enabled' => 'boolean',
         'urls' => 'array',
     ];
+
+    public function input(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => [
+                'urls' => $this->urls,
+                'topic' => $this->topic,
+                'description' => $this->description,
+            ],
+        );
+    }
 
     /**
      * @return BelongsTo<User, $this>

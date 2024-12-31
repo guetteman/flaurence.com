@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\PlanTypeEnum;
-use App\Models\Flow;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Database\Seeder;

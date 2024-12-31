@@ -37,6 +37,9 @@ class Writer extends Node
         Do not include any unnecessary information or irrelevant content.
         Keep the tone of the newsletter professional and informative.
         Make sure it is fully formatted and ready to be sent out.
+
+        The description of the newsletter is
+        {description}
         ';
 
         $promptTemplate = PromptTemplate::fromMessages([
@@ -47,6 +50,7 @@ class Writer extends Node
         return $llm->generate($promptTemplate->formatPrompt([
             'topic' => $topic,
             'date' => now()->toFormattedDayDateString(),
+            'description' => $state->description,
         ]));
     }
 
