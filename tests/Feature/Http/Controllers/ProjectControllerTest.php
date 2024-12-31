@@ -199,6 +199,20 @@ describe('ProjectController store', function () {
             ->assertSessionHasErrors(['urls.0' => 'The urls.0 field must be a valid URL.']);
     });
 
+    it('validates urls has at most 5 items', function () {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('projects.store'), [
+                'name' => 'My project',
+                'topic' => 'My topic',
+                'description' => 'My description',
+                'urls' => array_fill(0, 6, 'https://example.com'),
+                'cron_expression' => '0 0 * * *',
+            ])
+            ->assertSessionHasErrors(['urls' => 'The urls field must not have more than 5 items.']);
+    });
+
     it('validates urls has at least one item', function () {
         $user = User::factory()->create();
 
@@ -474,7 +488,7 @@ describe('ProjectController update', function () {
             ->assertSessionHasErrors(['urls' => 'The urls field must be an array.']);
     });
 
-    it('validates urls are valid urls', function () {
+    it('validates urls has at most 5 items', function () {
         $project = Project::factory()->create();
 
         $this->actingAs($project->user)
@@ -482,10 +496,10 @@ describe('ProjectController update', function () {
                 'name' => 'My project',
                 'topic' => 'My topic',
                 'description' => 'My description',
-                'urls' => ['not-a-url'],
+                'urls' => array_fill(0, 6, 'https://example.com'),
                 'cron_expression' => '0 0 * * *',
             ])
-            ->assertSessionHasErrors(['urls.0' => 'The urls.0 field must be a valid URL.']);
+            ->assertSessionHasErrors(['urls' => 'The urls field must not have more than 5 items.']);
     });
 
     it('validates urls has at least one item', function () {
