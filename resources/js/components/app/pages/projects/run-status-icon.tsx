@@ -1,4 +1,4 @@
-import { Cancel01Icon } from '@/components/icons/cancel-02-icon';
+import { Cancel01Icon } from '@/components/icons/cancel-01-icon';
 import { Rocket01Icon } from '@/components/icons/rocket-01-icon';
 import { Tick02Icon } from '@/components/icons/tick-02-icon';
 import { Timer01Icon } from '@/components/icons/timer-01-icon';
