@@ -27,6 +27,7 @@ class StoreProjectRequest extends FormRequest
             'topic' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:500'],
             'urls' => ['required', 'array'],
+            'urls.*' => ['url:http,https'],
             'cron_expression' => ['required', 'string', 'min:9'],
         ];
     }
