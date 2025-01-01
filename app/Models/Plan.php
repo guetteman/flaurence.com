@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $formatted_price
- *
  * @mixin IdeHelperPlan
  */
 class Plan extends Model

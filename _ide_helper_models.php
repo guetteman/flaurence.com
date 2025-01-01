@@ -15,49 +15,6 @@ namespace App\Models{
 /**
  * 
  *
- * @property int $id
- * @property string $external_id
- * @property string $name
- * @property string $short_description
- * @property string $description
- * @property string $version
- * @property bool $enabled
- * @property \ArrayObject $input_schema
- * @property \App\Enums\FlowOutputTypeEnum $output_type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
- * @property-read int|null $projects_count
- * @method static \Database\Factories\FlowFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereExternalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereInputSchema($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereOutputType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereShortDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow whereVersion($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Flow withoutTrashed()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	class IdeHelperFlow {}
-}
-
-namespace App\Models{
-/**
- * 
- *
  * @property string $formatted_price
  * @property int $id
  * @property string $external_product_id
