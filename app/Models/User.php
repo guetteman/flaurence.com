@@ -57,6 +57,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'credits' => 'integer',
         ];
     }
 
@@ -71,5 +72,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function reduceCredits(int $amount): void
+    {
+        $this->credits -= $amount;
+        $this->save();
+    }
+
+    public function addCredits(int $amount): void
+    {
+        $this->credits += $amount;
+        $this->save();
     }
 }

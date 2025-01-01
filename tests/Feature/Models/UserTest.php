@@ -31,4 +31,18 @@ describe('User Model', function () {
 
         $this->assertCount(3, $user->projects);
     });
+
+    it('can reduce credits', function () {
+        $user = User::factory()->create([
+            'credits' => 10,
+        ]);
+        $user->reduceCredits(10);
+        $this->assertEquals(0, $user->credits);
+    });
+
+    it('can add credits', function () {
+        $user = User::factory()->create();
+        $user->addCredits(10);
+        $this->assertEquals(10, $user->credits);
+    });
 });
