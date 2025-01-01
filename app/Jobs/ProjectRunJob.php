@@ -32,7 +32,7 @@ class ProjectRunJob implements ShouldQueue
             $graph = app(NewsletterGraph::class);
             $state = $graph->invoke(
                 input: $this->run->project->input,
-                id: $this->run->id,
+                id: (string) $this->run->id,
             );
 
             $this->run->update([

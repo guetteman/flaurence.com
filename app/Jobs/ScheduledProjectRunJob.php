@@ -17,6 +17,10 @@ class ScheduledProjectRunJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->project->user->credits <= 0) {
+            return;
+        }
+
         $run = $this->project->runs()->create([
             'status' => RunStatusEnum::Queued,
         ]);

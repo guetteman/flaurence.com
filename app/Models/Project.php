@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Closure;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +28,9 @@ class Project extends Model
         'urls' => 'array',
     ];
 
+    /**
+     * @return Attribute<Closure, Closure>
+     */
     public function input(): Attribute
     {
         return Attribute::make(
