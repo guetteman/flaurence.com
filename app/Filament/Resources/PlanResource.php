@@ -60,12 +60,16 @@ class PlanResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('price')
+                    ->sortable()
+                    ->searchable()
+                    ->money(currency: 'USD', divideBy: 100),
+                Tables\Columns\TextColumn::make('credits')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('external_product_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('external_variant_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
