@@ -7,6 +7,7 @@ use App\Models\Project;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 
 class RunScheduledProjectCommand extends Command
 {
@@ -29,6 +30,9 @@ class RunScheduledProjectCommand extends Command
         Project::query()
             ->where('enabled', true)
             ->where('cron_expression', '!=', null)
+            ->whereHas('user', function (Builder $query) {
+                $query->where('credits', '>', 0);
+            })
             ->get()
             ->each(function (Project $project) {
                 $lastRun = $project->runs()->latest()->first();

@@ -34,6 +34,7 @@ class GraphEventSubscriber
             ->dividedBy(that: config('credits.flaurence.usd_cents_per_credit'), roundingMode: RoundingMode::UP);
 
         $run->spent_credits += (int) ceil($spentCredits->toFloat());
+        $run->project->user->reduceCredits($spentCredits);
 
         $run->save();
     }
@@ -56,6 +57,8 @@ class GraphEventSubscriber
             ->dividedBy(that: config('credits.flaurence.usd_cents_per_credit'), roundingMode: RoundingMode::UP);
 
         $run->spent_credits += (int) ceil($spentCredits->toFloat());
+        $run->project->user->reduceCredits($spentCredits);
+
         $run->save();
     }
 
