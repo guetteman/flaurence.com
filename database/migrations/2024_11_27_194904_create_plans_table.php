@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('price');
+            $table->unsignedInteger('credits');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();

@@ -41,6 +41,10 @@ class PlanResource extends Resource
                     ->required()
                     ->numeric()
                     ->minValue(0),
+                Forms\Components\TextInput::make('credits')
+                    ->required()
+                    ->numeric()
+                    ->minValue(0),
                 Forms\Components\Toggle::make('active')
                     ->columnSpanFull()
                     ->required(),

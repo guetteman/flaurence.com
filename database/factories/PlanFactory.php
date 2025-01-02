@@ -25,6 +25,7 @@ class PlanFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'price' => $this->faker->randomNumber(4),
+            'credits' => $this->faker->randomNumber(3),
             'active' => true,
         ];
     }
