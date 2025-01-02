@@ -6,10 +6,29 @@ use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Events\Dispatcher;
 use LemonSqueezy\Laravel\Events\SubscriptionCreated;
+use LemonSqueezy\Laravel\Events\SubscriptionPaymentSuccess;
 
 class BillingEventSubscriber
 {
     public function handleSubscriptionCreatedEvent(SubscriptionCreated $event): void
+    {
+        /** @var User $user */
+        $user = $event->billable;
+
+        $plan = Plan::query()
+            ->where('external_variant_id', $event->subscription->variant_id)
+            ->first();
+
+        if (! $plan) {
+            return;
+        }
+
+        $user->update([
+            'credits' => $plan->credits,
+        ]);
+    }
+
+    public function handleSubscriptionPaymentSuccessEvent(SubscriptionPaymentSuccess $event): void
     {
         /** @var User $user */
         $user = $event->billable;
@@ -34,6 +53,7 @@ class BillingEventSubscriber
     {
         return [
             SubscriptionCreated::class => 'handleSubscriptionCreatedEvent',
+            SubscriptionPaymentSuccess::class => 'handleSubscriptionPaymentSuccessEvent',
         ];
     }
 }

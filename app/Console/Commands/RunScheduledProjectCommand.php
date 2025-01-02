@@ -31,10 +31,14 @@ class RunScheduledProjectCommand extends Command
             ->where('enabled', true)
             ->where('cron_expression', '!=', null)
             ->whereHas('user', function (Builder $query) {
-                $query->where('credits', '>', 0);
+                $query ->where('credits', '>', 0);
             })
             ->get()
             ->each(function (Project $project) {
+                if (! $project->user->subscription()->active() || $project->user->subscription()->onTrial()) {
+                    return;
+                }
+
                 $lastRun = $project->runs()->latest()->first();
                 $cron = new CronExpression($project->cron_expression);
 
