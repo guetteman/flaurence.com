@@ -8,9 +8,9 @@ const sentences: ReactNode[] = [
     <span className="text-primary-600 font-semibold">newsletters</span>.
   </div>,
   <div key={0} className="font-extralight">
-    Simply{' '}
+    Simply add your{' '}
     <span className="text-primary-600 font-semibold">
-      add your favorite links and topic
+      favorite links and topic
     </span>{' '}
     and let me do the rest.
   </div>,
