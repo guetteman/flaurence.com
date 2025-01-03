@@ -1,8 +1,11 @@
+import { FeaturedSentences } from '@/components/app/pages/welcome/featured-sentences';
+import { HeroSection } from '@/components/app/pages/welcome/hero-section';
+
 export default function WelcomePage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold">Welcome</h1>
-      <p>This is a welcome page</p>
+      <HeroSection />
+      <FeaturedSentences />
     </div>
   );
 }
