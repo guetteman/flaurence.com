@@ -12,6 +12,7 @@ export type PlanResourceData = {
   price: number;
   formatted_price: string;
   active: boolean;
+  is_popular: boolean;
 };
 
 export type PlanResourceCollection = {

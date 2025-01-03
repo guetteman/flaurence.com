@@ -28,6 +28,7 @@ class PlanResource extends JsonResource
             'price' => $this->price,
             'formatted_price' => $this->formatted_price,
             'active' => $this->active,
+            'is_popular' => $this->is_popular,
         ];
     }
 }

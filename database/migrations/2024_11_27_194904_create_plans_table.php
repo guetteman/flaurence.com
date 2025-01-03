@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('price');
             $table->unsignedInteger('credits');
             $table->boolean('active')->default(true);
+            $table->boolean('is_popular')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

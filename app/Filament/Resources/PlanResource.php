@@ -46,7 +46,8 @@ class PlanResource extends Resource
                     ->numeric()
                     ->minValue(0),
                 Forms\Components\Toggle::make('active')
-                    ->columnSpanFull()
+                    ->required(),
+                Forms\Components\Toggle::make('is_popular')
                     ->required(),
             ]);
     }
@@ -72,6 +73,8 @@ class PlanResource extends Resource
                 Tables\Columns\TextColumn::make('external_variant_id')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_popular')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

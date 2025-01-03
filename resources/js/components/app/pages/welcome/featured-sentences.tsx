@@ -10,7 +10,7 @@ const sentences: ReactNode[] = [
   <div key={0} className="font-extralight">
     Simply{' '}
     <span className="text-primary-600 font-semibold">
-      add your favorite links
+      add your favorite links and topic
     </span>{' '}
     and let me do the rest.
   </div>,
