@@ -19,6 +19,7 @@ export function ActiveSubscription() {
           <h2 className="text-2xl font-bold">{activePlan.data.name}</h2>
           <div
             className="prose-sm"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: It's markdown
             dangerouslySetInnerHTML={{ __html: activePlan.data.description }}
           />
         </div>

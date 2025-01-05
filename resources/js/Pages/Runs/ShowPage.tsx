@@ -28,6 +28,7 @@ export default function ShowPage({ run }: ShowPageProps) {
         <motion.div
           variants={slideUpInVariants}
           className="prose mx-auto max-w-4xl pb-32 pt-8"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: It's markdown
           dangerouslySetInnerHTML={{
             __html: run.data.output.markdown as string,
           }}
