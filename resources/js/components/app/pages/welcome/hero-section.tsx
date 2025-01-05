@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
 
 export function HeroSection() {
   return (
@@ -10,8 +11,8 @@ export function HeroSection() {
           the best content from around the web and delivering it right to your{' '}
           <span className="text-gray-400">inbox</span>.
         </p>
-        <Button size="lg" className="mt-10">
-          Get started
+        <Button asChild size="lg" className="mt-10">
+          <Link href={route('register')}>Get started</Link>
         </Button>
       </div>
     </div>
