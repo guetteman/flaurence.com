@@ -14,13 +14,22 @@ export function Navbar() {
   return (
     <nav className="py-4">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4">
-        <Link
-          href={user ? route('dashboard') : route('welcome')}
-          className="flex items-baseline gap-2 font-bold"
-        >
-          <Isotype className="h-5" />
-          <Logo className="h-4" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href={route('welcome')}
+            className="flex items-baseline gap-2 font-bold"
+          >
+            <Isotype className="h-5" />
+            <Logo className="h-4" />
+          </Link>
+          {user && (
+            <Button asChild variant="link">
+              <Link href={route('dashboard')} className="font-bold">
+                Dashboard
+              </Link>
+            </Button>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           {user ? (
             <>
